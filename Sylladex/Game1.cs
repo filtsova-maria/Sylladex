@@ -61,7 +61,7 @@ namespace Sylladex
             GameManager.InputManager.AddObject(Keys.Down, () => player.Move(0, Direction.Down));
             GameManager.InputManager.AddObject(Keys.Left, () => player.Move(Direction.Left, 0));
             GameManager.InputManager.AddObject(Keys.Right, () => player.Move(Direction.Right, 0));
-            
+
             GameManager.SoundtrackManager.Play("game", true);
         }
 
@@ -89,81 +89,6 @@ namespace Sylladex
             base.Draw(gameTime);
         }
     }
-
-    public class Player : Entity
-    {
-        public enum Direction
-        {
-            Left = -1,
-            Right = 1,
-            Up = -1,
-            Down = 1
-        }
-        private float _speed = 150F;
-        private Direction _directionX = Direction.Right;
-        public Player(Vector2 pos)
-        {
-            Sprite = new Sprite(this, GameManager.TextureManager.GetObject("player"));
-            DrawPosition = pos;
-        }
-
-        public override void Update()
-        {
-
-        }
-
-        public void Move(Direction xDirection, Direction yDirection)
-        {
-            GameManager.SoundEffectManager.Play("footsteps");
-            float elapsedTime = GameManager.TotalSeconds;
-            float newX = DrawPosition.X + _speed * (int)xDirection * elapsedTime;
-            float newY = DrawPosition.Y + _speed * (int)yDirection * elapsedTime;
-            if (xDirection != 0)
-            {
-                _directionX = xDirection;
-            }
-
-            if (newX >= 0 && newX <= GameManager.Graphics.PreferredBackBufferWidth)
-            {
-                DrawPosition = new Vector2(newX, DrawPosition.Y);
-            }
-
-            if (newY >= 0 && newY <= GameManager.Graphics.PreferredBackBufferHeight)
-            {
-                DrawPosition = new Vector2(DrawPosition.X, newY);
-            }
-        }
-
-        public override void Draw()
-        {
-            Sprite.Draw(_directionX == Direction.Left);
-        }
-    }
-
-    public class Sprite
-    {
-        private readonly Texture2D _texture;
-        private readonly Entity _owner;
-
-        public Sprite(Entity owner, Texture2D texture)
-        {
-            _texture = texture;
-            _owner = owner;
-        }
-
-        public void Draw(bool flipX=false)
-        {
-            GameManager.SpriteBatch.Draw(_texture, _owner.DrawPosition, null, Color.White, 0f, Vector2.Zero, Vector2.One, flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 0.5f);
-        }
-    }
-
-    public abstract class Entity
-    {
-        public Vector2 DrawPosition { get; set; }
-        public Sprite Sprite { get; init; }
-        public abstract void Update();
-        public abstract void Draw();
-    }
-    // TODO: animation manager
+    // TODO: animation manager, similar to SoundEffectManager manager
     // TODO: window manager, background, UI rendering
 }
