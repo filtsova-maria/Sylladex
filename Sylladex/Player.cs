@@ -21,6 +21,11 @@ namespace Sylladex
             DrawPosition = pos;
             _moveAnimation = GameManager.AnimationManager.GetObject("playerMove");
         }
+        public override void Update()
+        {
+            // Call the base class's Update method to handle animation updates
+            base.Update();
+        }
 
         public void Move(Direction xDirection, Direction yDirection)
         {
