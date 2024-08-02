@@ -14,7 +14,11 @@ namespace Sylladex
             _owner = owner;
         }
 
-        public void Draw(Color? tint, bool flipX = false)
+        public int GetWidth() => _texture.Width;
+        public int GetHeight() => _texture.Height;
+
+
+        public void Draw(Color? tint, float depth=0.5f, bool flipX = false)
         {
             GameManager.SpriteBatch.Draw(
                 _texture,
@@ -25,10 +29,8 @@ namespace Sylladex
                 Vector2.Zero,
                 Vector2.One,
                 flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                0.5f
+                depth
              );
         }
     }
-    // TODO: animation manager, similar to SoundEffectManager manager
-    // TODO: window manager, background, UI rendering
 }

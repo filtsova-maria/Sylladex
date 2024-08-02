@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
+﻿using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
@@ -25,18 +24,13 @@ namespace Sylladex
             }
             else
             {
-                throw new KeyNotFoundException($"'{typeof(TValue).GetType()}': Asset with key '{key}' not found.");
+                throw new KeyNotFoundException($"'{typeof(TValue).GetType()}': Object with key '{key}' not found.");
             }
         }
     }
     public abstract class ObjectManager<T> : ObjectManager<string, T> { }
-
-    public class TextureManager : ObjectManager<Texture2D>
-    {
-    }
-    public class AnimationManager : ObjectManager<Animation>
-    {
-    }
+    public class TextureManager : ObjectManager<Texture2D> { }
+    public class AnimationManager : ObjectManager<Animation> { }
 
     public class SoundEffectManager : ObjectManager<SoundEffect>
     {
@@ -56,7 +50,7 @@ namespace Sylladex
 
     public class SoundtrackManager : ObjectManager<Song>
     {
-        public void Play(string key, bool shouldLoop=false)
+        public void Play(string key, bool shouldLoop = false)
         {
             MediaPlayer.Play(GetObject(key));
             MediaPlayer.IsRepeating = shouldLoop;
@@ -66,16 +60,16 @@ namespace Sylladex
     {
         public void Update()
         {
-            foreach (var entity in _objects)
+            foreach (var entity in _objects.Values)
             {
-                entity.Value.Update();
+                entity.Update();
             }
         }
         public void Draw()
         {
-            foreach (var entity in _objects)
+            foreach (var entity in _objects.Values)
             {
-                entity.Value.Draw();
+                entity.Draw();
             }
         }
     }
@@ -90,6 +84,20 @@ namespace Sylladex
                 if (kstate.IsKeyDown(key.Key))
                 {
                     key.Value();
+                }
+            }
+        }
+    }
+
+    public class WindowManager : ObjectManager<string, Window>
+    {
+        public void Draw()
+        {
+            foreach (var window in _objects.Values)
+            {
+                if (window.IsVisible())
+                {
+                    window.Draw();
                 }
             }
         }

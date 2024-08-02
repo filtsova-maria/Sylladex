@@ -5,10 +5,10 @@ namespace Sylladex
     public abstract class Entity
     {
         public Vector2 DrawPosition { get; set; }
-        public Sprite Sprite { get; init; }
+        protected Sprite Sprite { get; init; }
+        protected Direction Direction { get; set; } = Direction.Right;
+
         public abstract void Update();
         public abstract void Draw();
     }
-    // TODO: animation manager, similar to SoundEffectManager manager
-    // TODO: window manager, background, UI rendering
 }
