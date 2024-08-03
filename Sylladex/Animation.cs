@@ -32,6 +32,7 @@ namespace Sylladex
         {
             _active = false;
         }
+
         public void Start()
         {
             _active = true;
@@ -55,9 +56,10 @@ namespace Sylladex
                 _frame = (_frame + 1) % _frames;
             }
         }
-        public void Draw(Vector2 position, bool flip=false)
+
+        public void Draw(Vector2 position, float depth, bool flip=false)
         {
-            GameManager.SpriteBatch.Draw(_texture, position, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero , Vector2.One, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1);
+            GameManager.SpriteBatch.Draw(_texture, position, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero , Vector2.One, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, depth);
         }
     }
 

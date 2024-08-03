@@ -26,11 +26,11 @@
         {
             if (IsAnimating && CurrentAnimation is not null)
             {
-                CurrentAnimation.Draw(DrawPosition, Direction == Direction.Left);
+                CurrentAnimation.Draw(DrawPosition, LayerIndex.Depth, Direction == Direction.Left);
             }
             else
             {
-                Sprite.Draw(null, 0.5f, Direction == Direction.Left);
+                Sprite.Draw(null);
             }
         }
     }

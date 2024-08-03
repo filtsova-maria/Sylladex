@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace Sylladex
 {
@@ -17,8 +18,7 @@ namespace Sylladex
         public int GetWidth() => _texture.Width;
         public int GetHeight() => _texture.Height;
 
-
-        public void Draw(Color? tint, float depth=0.5f, bool flipX = false)
+        public void Draw(Color? tint)
         {
             GameManager.SpriteBatch.Draw(
                 _texture,
@@ -28,8 +28,8 @@ namespace Sylladex
                 0f,
                 Vector2.Zero,
                 Vector2.One,
-                flipX ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                depth
+                _owner.Direction == Direction.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+                _owner.LayerIndex.Depth
              );
         }
     }

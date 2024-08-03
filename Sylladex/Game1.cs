@@ -35,7 +35,7 @@ namespace Sylladex
         {
             // Load the textures
             GameManager.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            string[] textures = { "player", "playerMove", "floor", "controlDeck", "itemCard", "settingsIcon" };
+            string[] textures = { "player", "playerMove", "floor", "controlDeck", "itemCard", "settingsIcon", "pixelBase" };
             foreach (var texture in textures)
             {
                 GameManager.TextureManager.AddObject(texture, Content.Load<Texture2D>(texture));
@@ -56,6 +56,7 @@ namespace Sylladex
             }
             // Load the UI elements
             GameManager.WindowManager.AddObject("background", new Window(Content.Load<Texture2D>("floor"), 0, true));
+            GameManager.WindowManager.AddObject("inventoryHUD", new Window(Content.Load<Texture2D>("pixelBase"), 60, 100, 50, new Vector2(0, GameManager.Graphics.PreferredBackBufferHeight-50), true));
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
             GameManager.EntityManager.AddObject("player", new Player(initPlayerPosition));
@@ -85,9 +86,9 @@ namespace Sylladex
         {
             GraphicsDevice.Clear(Color.Black);
 
-            GameManager.SpriteBatch.Begin();
-            GameManager.WindowManager.Draw();
+            GameManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
             GameManager.EntityManager.Draw();
+            GameManager.WindowManager.Draw();
             GameManager.SpriteBatch.End();
 
             base.Draw(gameTime);
