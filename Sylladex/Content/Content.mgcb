@@ -61,6 +61,13 @@
 /processorParam:TextureFormat=Color
 /build:itemCard.png
 
+#begin main.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:main.spritefont
+
 #begin pixelBase.png
 /importer:TextureImporter
 /processor:TextureProcessor
