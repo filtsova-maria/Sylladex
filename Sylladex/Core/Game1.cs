@@ -23,13 +23,13 @@ namespace Sylladex.Core
             GameManager.SoundEffectManager = new SoundEffectManager();
             GameManager.SoundtrackManager = new SoundtrackManager();
             GameManager.EntityManager = new EntityManager();
-            GameManager.WindowManager = new WindowManager();
+            GameManager.CanvasManager = new CanvasManager();
             GameManager.InputManager = new InputManager();
         }
 
         protected override void Initialize()
         {
-            // Set the window size
+            // Set the game window size
             GameManager.Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2;
             GameManager.Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2;
             GameManager.Graphics.ApplyChanges();
@@ -65,10 +65,11 @@ namespace Sylladex.Core
                 GameManager.SoundEffectManager.AddObject(soundEffect, Content.Load<SoundEffect>(soundEffect));
             }
             // Load the UI elements
-            GameManager.WindowManager.AddObject("background", new Window(Content.Load<Texture2D>("floor"), 0, true));
-            Window HUD = new Window(GameManager.TextureManager.GetObject("pixelBase"), 60, 300, 100, new Vector2(0, GameManager.Graphics.PreferredBackBufferHeight - 100), true);
-            Button settingsIcon = new Button(HUD, GameManager.TextureManager.GetObject("settingsIcon"), new Vector2(0, 0), 50, 50, () => { });
-            GameManager.WindowManager.AddObject("inventoryHUD", HUD);
+            GameManager.CanvasManager.AddObject("background", new Canvas(Content.Load<Texture2D>("floor"), 0, true));
+
+            Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 60, 300, 100, new Vector2(0, GameManager.Graphics.PreferredBackBufferHeight - 100), true);
+            GameManager.CanvasManager.AddObject("inventoryHUD", HUD);
+            var settingsButton = new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50).In(HUD).At(new Vector2(0, 0));
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
             GameManager.EntityManager.AddObject("player", new Player(initPlayerPosition));
@@ -90,7 +91,7 @@ namespace Sylladex.Core
             GameManager.Update(gameTime);
             GameManager.EntityManager.Update();
             GameManager.InputManager.Update();
-            GameManager.WindowManager.Update();
+            GameManager.CanvasManager.Update();
 
             base.Update(gameTime);
         }
@@ -101,7 +102,7 @@ namespace Sylladex.Core
 
             GameManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
             GameManager.EntityManager.Draw();
-            GameManager.WindowManager.Draw();
+            GameManager.CanvasManager.Draw();
             //GameManager.SpriteBatch.DrawString(GameManager.FontManager.GetObject("main"), "Score", new Vector2(100, 100), Color.Black);
             GameManager.SpriteBatch.End();
 

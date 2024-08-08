@@ -12,7 +12,7 @@ namespace Sylladex.Managers
         public static SoundEffectManager SoundEffectManager { get; set; }
         public static SoundtrackManager SoundtrackManager { get; set; }
         public static EntityManager EntityManager { get; set; }
-        public static WindowManager WindowManager { get; set; }
+        public static CanvasManager CanvasManager { get; set; }
         public static InputManager InputManager { get; set; }
 
         public static SpriteBatch SpriteBatch { get; set; }
