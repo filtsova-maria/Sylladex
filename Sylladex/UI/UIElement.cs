@@ -17,14 +17,36 @@ namespace Sylladex.UI
         public Texture2D Texture { get; init; }
         public float? Opacity { get; set; }
         public Color? Tint { get; set; }
-        public virtual bool IsPressed() => InputManager.IsHovered(Bounds) && InputManager.Clicked;
-        public virtual bool IsHovered() => InputManager.IsHovered(Bounds);
-        public Rectangle Bounds;
-        public Rectangle OriginalBounds;
+        public Rectangle Bounds { get; protected set; }
+        public Rectangle OriginalBounds { get; protected set; }
+        public int Width { get; protected set; }
+        public int Height { get; protected set; }
+
+        public virtual bool IsPressed()
+        {
+            return InputManager.IsHovered(Bounds) && InputManager.Clicked;
+        }
+
+        public virtual bool IsHovered()
+        {
+            return InputManager.IsHovered(Bounds);
+        }
+
+        /// <summary>
+        /// Helper function to keep the input bounds of the UI element in the chaining process.
+        /// </summary>
+        internal void SetBounds()
+        {
+            OriginalBounds = new Rectangle(0, 0, Texture.Width, Texture.Height);
+            Bounds = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+        }
         public abstract void Update();
         public abstract void Draw();
-        public int Width;
-        public int Height;
+
+        public override string ToString()
+        {
+            return $"{GetType().Name}: Owner={Owner}, Position={Position}, LayerIndex={LayerIndex}, Texture={Texture}, Opacity={Opacity}, Tint={Tint}, Bounds={Bounds}, OriginalBounds={OriginalBounds}, Width={Width}, Height={Height}";
+        }
     }
 
     /// <summary>
@@ -42,7 +64,7 @@ namespace Sylladex.UI
         public static PlacedUIElement<T> In<T>(this T element, IContainer container) where T : UIElement
         {
             container.AddChild(element, null);
-            return new PlacedUIElement<T>(element, container, element.Texture, element.Width, element.Height, element.Tint, element.Opacity);
+            return new PlacedUIElement<T>(element, container, element.Texture, element.Width, element.Height, element.Position, element.Tint, element.Opacity);
         }
     }
 
@@ -51,7 +73,7 @@ namespace Sylladex.UI
     /// </summary>
     public class PlacedUIElement<T> : UIElement where T : UIElement
     {
-        T Element { get; set; }
+        private T Element { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the PlacedUIElement class.
@@ -63,12 +85,10 @@ namespace Sylladex.UI
         /// <param name="height">The height of the UI element.</param>
         /// <param name="color">The color tint of the UI element. Defaults to <c>Color.White</c> (original texture color).</param>
         /// <param name="opacity">The opacity of the UI element. Defaults to the opacity of the owner container.</param>
-        public PlacedUIElement(T element, IContainer owner, Texture2D texture, int width, int height, Color? color = null, float? opacity = null)
+        public PlacedUIElement(T element, IContainer owner, Texture2D texture, int width, int height, Vector2 position, Color? color = null, float? opacity = null)
         {
             Element = element;
-            // Ensures the bounds are passed from the original element to its placed chainable.
-            element.OriginalBounds = new Rectangle(0, 0, element.Texture.Width, element.Texture.Height);
-            element.Bounds = new Rectangle((int)element.Position.X, (int)element.Position.Y, element.Width, element.Height);
+            element.SetBounds();
             Owner = owner;
             Texture = texture;
             Width = width;
@@ -84,6 +104,7 @@ namespace Sylladex.UI
         /// <returns>The UI element with the updated position.</returns>
         public T At(Vector2 position)
         {
+            Element.Position = position;
             return Owner.SetPosition(Element, position);
         }
 

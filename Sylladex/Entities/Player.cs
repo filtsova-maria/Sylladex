@@ -19,8 +19,8 @@ namespace Sylladex.Entities
     /// </summary>
     public class Player : AnimatedEntity
     {
+        private Animation _moveAnimation;
         private readonly float _speed = 150F;
-        private readonly Animation _moveAnimation;
 
         /// <summary>
         /// Initializes a new instance of the Player class.

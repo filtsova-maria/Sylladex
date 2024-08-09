@@ -6,7 +6,6 @@ using System.Diagnostics;
 
 namespace Sylladex.UI
 {
-
     /// <summary>
     /// Represents a button UI element.
     /// </summary>
