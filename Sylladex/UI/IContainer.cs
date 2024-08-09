@@ -7,7 +7,7 @@ namespace Sylladex.UI
         // <summary>
         // Adds a child element to the container.
         // </summary>
-        public T AddChild<T>(T child, Vector2? position) where T : UIElement;
+        public T AddChild<T>(T child) where T : UIElement;
         // <summary>
         // Sets the position of the child element.
         // </summary>

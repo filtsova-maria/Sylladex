@@ -25,6 +25,9 @@ namespace Sylladex.UI
         private int _width;
         private int _height;
 
+        public int Width => _width;
+        public int Height => _height;
+
         // Stores the child elements of the canvas and their relative positions.
         private readonly Dictionary<UIElement, Vector2> _children = new Dictionary<UIElement, Vector2>();
 
@@ -106,19 +109,17 @@ namespace Sylladex.UI
         /// </summary>
         /// <typeparam name="T">The type of the child element.</typeparam>
         /// <param name="child">The child element to add.</param>
-        /// <param name="relativePosition">The relative position of the child element.</param>
         /// <returns>The added child element.</returns>
-        public T AddChild<T>(T child, Vector2? relativePosition) where T : UIElement
+        public T AddChild<T>(T child) where T : UIElement
         {
             child.Owner = this;
             child.Opacity = child.Opacity ?? Opacity;
-            // If the position is not specified, the child will be placed at the top-left corner of the canvas.
-            Vector2 relPos = relativePosition ?? Vector2.Zero;
-            _children.Add(child, relPos);
+            // The child will be placed at the top-left corner of the canvas by default until `At` is called.
+            _children.Add(child, this.Position);
+            child.Position = Position;
             // Set relative layer of the child element.
             child.LayerIndex = LayerIndex + _children.Count;
             // Set the absolute position of the child element.
-            child.Position = Position + relPos;
             return child;
         }
 
@@ -133,6 +134,11 @@ namespace Sylladex.UI
         {
             _children[child] = relativePosition;
             child.Position = Position + relativePosition;
+            // We need to set the UIElement bounding box to respect the absolute position of the element on the screen.
+            // It can only be properly calculated here from the given relative position.
+            // This ensures correct texture rendering in the child's `Draw` method.
+            child.Bounds = new Rectangle((int)child.Position.X, (int)child.Position.Y, child.Width, child.Height);
+            child.OriginalBounds = new Rectangle(0, 0, child.Texture.Width, child.Texture.Height);
             return child;
         }
 
@@ -166,6 +172,10 @@ namespace Sylladex.UI
             {
                 child.Draw();
             }
+        }
+        public override string ToString()
+        {
+            return $"Canvas: {Texture} ({_width}x{_height}) at {Position}, visible: {_visible}, opacity: {_opacity}, tint: {Tint}, layer index: {LayerIndex}, children: {_children.Count}";
         }
     }
 }

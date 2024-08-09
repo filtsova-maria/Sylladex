@@ -5,7 +5,6 @@ using Sylladex.Graphics;
 
 namespace Sylladex.UI
 {
-
     /// <summary>
     /// Represents a base UI element, needs to be placed via <see cref="UIElementExtensions.In"/>.
     /// </summary>
@@ -17,10 +16,10 @@ namespace Sylladex.UI
         public Texture2D Texture { get; init; }
         public float? Opacity { get; set; }
         public Color? Tint { get; set; }
-        public Rectangle Bounds { get; protected set; }
-        public Rectangle OriginalBounds { get; protected set; }
-        public int Width { get; protected set; }
-        public int Height { get; protected set; }
+        public Rectangle Bounds { get; set; }
+        public Rectangle OriginalBounds { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public virtual bool IsPressed()
         {
@@ -32,20 +31,12 @@ namespace Sylladex.UI
             return InputManager.IsHovered(Bounds);
         }
 
-        /// <summary>
-        /// Helper function to keep the input bounds of the UI element in the chaining process.
-        /// </summary>
-        internal void SetBounds()
-        {
-            OriginalBounds = new Rectangle(0, 0, Texture.Width, Texture.Height);
-            Bounds = new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
-        }
         public abstract void Update();
         public abstract void Draw();
 
         public override string ToString()
         {
-            return $"{GetType().Name}: Owner={Owner}, Position={Position}, LayerIndex={LayerIndex}, Texture={Texture}, Opacity={Opacity}, Tint={Tint}, Bounds={Bounds}, OriginalBounds={OriginalBounds}, Width={Width}, Height={Height}";
+            return $"{GetType().Name}: Position={Position}, LayerIndex={LayerIndex}, Texture={Texture}, Opacity={Opacity}, Tint={Tint}, Bounds={Bounds}, OriginalBounds={OriginalBounds}, Width={Width}, Height={Height},\nOwner=({Owner})";
         }
     }
 
@@ -63,8 +54,8 @@ namespace Sylladex.UI
         /// <returns>The placed UI element.</returns>
         public static PlacedUIElement<T> In<T>(this T element, IContainer container) where T : UIElement
         {
-            container.AddChild(element, null);
-            return new PlacedUIElement<T>(element, container, element.Texture, element.Width, element.Height, element.Position, element.Tint, element.Opacity);
+            container.AddChild(element);
+            return new PlacedUIElement<T>(element, container);
         }
     }
 
@@ -80,21 +71,11 @@ namespace Sylladex.UI
         /// </summary>
         /// <param name="element">The UI element to be placed.</param>
         /// <param name="owner">The owner container of the UI element.</param>
-        /// <param name="texture">The texture of the UI element.</param>
-        /// <param name="width">The width of the UI element.</param>
-        /// <param name="height">The height of the UI element.</param>
-        /// <param name="color">The color tint of the UI element. Defaults to <c>Color.White</c> (original texture color).</param>
-        /// <param name="opacity">The opacity of the UI element. Defaults to the opacity of the owner container.</param>
-        public PlacedUIElement(T element, IContainer owner, Texture2D texture, int width, int height, Vector2 position, Color? color = null, float? opacity = null)
+        public PlacedUIElement(T element, IContainer owner)
         {
-            Element = element;
-            element.SetBounds();
             Owner = owner;
-            Texture = texture;
-            Width = width;
-            Height = height;
-            Tint = color ?? Color.White;
-            Opacity = opacity;
+            Element = element;
+            Element.Owner = owner;
         }
 
         /// <summary>
@@ -118,16 +99,7 @@ namespace Sylladex.UI
         /// </summary>
         public override void Draw()
         {
-            GameManager.SpriteBatch.Draw(
-                Texture,
-                Bounds,
-                OriginalBounds,
-                (Color)Tint * (float)Opacity,
-                0f,
-                Vector2.Zero,
-                SpriteEffects.None,
-                LayerIndex.Depth
-            );
+            Element.Draw();
         }
     }
 }

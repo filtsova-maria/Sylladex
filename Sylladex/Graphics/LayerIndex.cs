@@ -73,7 +73,7 @@ namespace Sylladex.Graphics
         }
         public override string ToString()
         {
-            return $"{this.GetType().Name} (Layer: {Layer}, Depth: {Depth})";
+            return $"(Layer: {Layer}, Depth: {Depth})";
         }
     }
 }

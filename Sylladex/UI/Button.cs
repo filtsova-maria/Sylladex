@@ -33,7 +33,7 @@ namespace Sylladex.UI
         }
 
         /// <summary>
-        /// Updates the button.
+        /// Reacts to button events.
         /// </summary>
         public override void Update()
         {
@@ -45,7 +45,7 @@ namespace Sylladex.UI
         }
 
         /// <summary>
-        /// Draws the button.
+        /// Draws the button in the main loop.
         /// </summary>
         public override void Draw()
         {
