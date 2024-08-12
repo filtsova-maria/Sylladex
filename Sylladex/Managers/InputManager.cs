@@ -10,22 +10,22 @@ namespace Sylladex.Managers
     public class InputManager : ObjectManager<Keys, Action>
     {
         /// <summary>
-        /// Gets or sets the current state of the mouse.
+        /// Current state of the mouse.
         /// </summary>
         public static MouseState MouseState { get; private set; }
 
         /// <summary>
-        /// Gets or sets the previous state of the mouse.
+        /// Previous state of the mouse.
         /// </summary>
         public static MouseState LastMouseState { get; private set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the mouse button has been clicked.
+        /// Indicates whether the mouse button has been clicked.
         /// </summary>
         public static bool Clicked { get; private set; }
 
         /// <summary>
-        /// Gets or sets the rectangle representing the mouse cursor for collision (hovering) detection.
+        /// Rectangle representing the mouse cursor for collision (hovering) detection.
         /// </summary>
         public static Rectangle MouseCursor { get; private set; }
 

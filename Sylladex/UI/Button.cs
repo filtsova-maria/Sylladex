@@ -76,5 +76,6 @@ namespace Sylladex.UI
         }
     }
     // TODO: label component
+    // TODO: settings window
     // TODO: implement sylladex UI, layout calculations
 }

@@ -142,6 +142,9 @@ namespace Sylladex.UI
             return child;
         }
 
+        public void Show() => _visible = true;
+        public void Hide() => _visible = false;
+
         /// <summary>
         /// Updates the canvas and its child elements.
         /// </summary>

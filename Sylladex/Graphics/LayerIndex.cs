@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Sylladex.Managers;
 
 namespace Sylladex.Graphics
 {
@@ -8,6 +9,8 @@ namespace Sylladex.Graphics
     public class LayerIndex
     {
         public const int NumberOfLayers = 100; // Represents the maximum number of rendered game objects
+        public const int MaxEntityLayer = NumberOfLayers / 2; // First half of the layers are reserved for entities, the remaining upper half is for UI
+        public static readonly int PixelsPerLayer = GameManager.Graphics!.PreferredBackBufferHeight / MaxEntityLayer; // Proportions the layers based on the screen height
         private float _depth = 0.5f;
         private int _layer;
 

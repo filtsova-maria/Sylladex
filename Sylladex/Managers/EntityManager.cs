@@ -1,4 +1,5 @@
 ﻿using Sylladex.Entities;
+using Sylladex.Graphics;
 
 namespace Sylladex.Managers
 {
@@ -17,6 +18,8 @@ namespace Sylladex.Managers
             foreach (var entity in _objects.Values)
             {
                 entity.Update();
+                // Calculate the layer index based on the entity's vertical position so that the ones below are rendered on top and vice versa.
+                entity.LayerIndex.SetIndex((int)entity.BottomPosition / LayerIndex.PixelsPerLayer);
             }
         }
 

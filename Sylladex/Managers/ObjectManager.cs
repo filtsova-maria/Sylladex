@@ -7,7 +7,7 @@ namespace Sylladex.Managers
     /// </summary>
     /// <typeparam name="TKey">The type of the key to retrieve the object or an asset.</typeparam>
     /// <typeparam name="TValue">The type of the value to be retrieved.</typeparam>
-    public abstract class ObjectManager<TKey, TValue>
+    public abstract class ObjectManager<TKey, TValue> where TKey : notnull
     {
         protected Dictionary<TKey, TValue> _objects = new Dictionary<TKey, TValue>();
 

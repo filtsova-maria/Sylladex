@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Sylladex.Graphics;
 using Sylladex.Managers;
+using System.Collections.Generic;
 
 namespace Sylladex.Entities
 {
@@ -19,19 +20,20 @@ namespace Sylladex.Entities
     /// </summary>
     public class Player : AnimatedEntity
     {
-        private Animation _moveAnimation;
+        private readonly Animation _moveAnimation;
         private readonly float _speed = 150F;
-
+        // TODO: Implement inventory system
+        private readonly List<Item> _inventory = new List<Item>();
         /// <summary>
         /// Initializes a new instance of the Player class.
         /// </summary>
         /// <param name="pos">The initial position of the player.</param>
         public Player(Vector2 pos)
         {
-            Sprite = new Sprite(this, GameManager.TextureManager.GetObject("player"));
+            Sprite = new Sprite(this, GameManager.TextureManager!.GetObject("player"));
             Direction = Direction.Right;
             DrawPosition = pos;
-            _moveAnimation = GameManager.AnimationManager.GetObject("playerMove");
+            _moveAnimation = GameManager.AnimationManager!.GetObject("playerMove");
         }
 
         /// <summary>
@@ -54,7 +56,7 @@ namespace Sylladex.Entities
             IsAnimating = true;
             CurrentAnimation = _moveAnimation;
             // Play walking sound effect
-            GameManager.SoundEffectManager.Play("footsteps");
+            GameManager.SoundEffectManager!.Play("footsteps");
             // Calculate the new position with respect to game window border collisions
             float elapsedTime = GameManager.TotalSeconds;
             float newX = DrawPosition.X + _speed * (int)xDirection * elapsedTime;
@@ -64,14 +66,14 @@ namespace Sylladex.Entities
                 Direction = xDirection;
             }
 
-            if (newX >= 0 && newX <= GameManager.Graphics.PreferredBackBufferWidth - Sprite.GetWidth())
+            if (newX >= 0 && newX <= GameManager.Graphics!.PreferredBackBufferWidth - Sprite?.GetWidth())
             {
-                DrawPosition = new Vector2(newX, DrawPosition.Y);
+                DrawPosition = new Vector2((int)newX, (int)DrawPosition.Y);
             }
 
-            if (newY >= 0 && newY <= GameManager.Graphics.PreferredBackBufferHeight - Sprite.GetHeight())
+            if (newY >= 0 && newY <= GameManager.Graphics!.PreferredBackBufferHeight - Sprite?.GetHeight())
             {
-                DrawPosition = new Vector2(DrawPosition.X, newY);
+                DrawPosition = new Vector2((int)DrawPosition.X, (int)newY);
             }
         }
     }

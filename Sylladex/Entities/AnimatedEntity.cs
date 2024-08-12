@@ -7,7 +7,6 @@ namespace Sylladex.Entities
     /// </summary>
     public abstract class AnimatedEntity : Entity
     {
-#nullable enable
         protected Animation? CurrentAnimation { get; set; }
         protected bool IsAnimating { get; set; }
 
@@ -41,7 +40,7 @@ namespace Sylladex.Entities
             }
             else
             {
-                Sprite.Draw(null);
+                Sprite!.Draw();
             }
         }
     }
