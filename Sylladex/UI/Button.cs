@@ -15,7 +15,7 @@ namespace Sylladex.UI
         private Color _disabledColor;
         private Action _onClick;
         private SpriteFont _font;
-        private string _text;
+        private string? _text;
         private Color _textColor;
 
         /// <summary>
@@ -23,17 +23,17 @@ namespace Sylladex.UI
         /// </summary>
         public bool IsEnabled { get; set; }
 
-        public Button(Texture2D texture, int width, int height, Color? color = null, float? opacity = null, bool enabled = true, Color? hoverColor = null, Color? disabledColor = null, SpriteFont font = null, string text = null, Color? textColor = null)
+        public Button(Texture2D texture, int width, int height, string? text, Color? color = null, Color? textColor = null, SpriteFont? font = null, float? opacity = 1f, bool enabled = true, Color? hoverColor = null, Color? disabledColor = null)
         {
             Texture = texture;
             Width = width;
             Height = height;
             Tint = color ?? Color.White;
-            Opacity = opacity ?? 1f;
+            Opacity = opacity;
             _hoverColor = hoverColor ?? Color.Gray;
             _disabledColor = disabledColor ?? Color.DarkGray;
             IsEnabled = enabled;
-            _font = font ?? GameManager.FontManager.GetObject("main");
+            _font = font ?? GameManager.FontManager!.GetObject("main");
             _text = text;
             _textColor = textColor ?? Color.Black;
         }
@@ -55,12 +55,12 @@ namespace Sylladex.UI
         /// </summary>
         public override void Draw()
         {
-            Color buttonColor = IsEnabled ? (IsPressed() || IsHovered() ? _hoverColor : (Color)Tint) : _disabledColor;
-            GameManager.SpriteBatch.Draw(
+            Color buttonColor = IsEnabled ? (IsPressed() || IsHovered() ? _hoverColor : Tint ?? Color.White) : _disabledColor;
+            GameManager.SpriteBatch!.Draw(
                 Texture,
                 Bounds,
                 OriginalBounds,
-                buttonColor * (float)Opacity,
+                buttonColor * (Opacity ?? 1),
                 0f,
                 Vector2.Zero,
                 SpriteEffects.None,

@@ -10,7 +10,7 @@ namespace Sylladex.UI
     /// </summary>
     public abstract class UIElement : IRenderable
     {
-        public IContainer Owner { get; set; }
+        public IContainer? Owner { get; set; }
         public Vector2 Position { get; set; }
         public LayerIndex LayerIndex { get; set; }
         public Texture2D Texture { get; init; }
@@ -29,6 +29,15 @@ namespace Sylladex.UI
         public virtual bool IsHovered()
         {
             return InputManager.IsHovered(Bounds);
+        }
+
+        public UIElement()
+        {
+            Position = Vector2.Zero;
+            LayerIndex = new LayerIndex();
+            Opacity = 1f;
+            Tint = Color.White;
+            Texture = GameManager.TextureManager!.GetObject("pixelBase");
         }
 
         public abstract void Update();
@@ -86,7 +95,7 @@ namespace Sylladex.UI
         public T At(Vector2 position)
         {
             Element.Position = position;
-            return Owner.SetPosition(Element, position);
+            return Owner?.SetPosition(Element, position) ?? Element;
         }
 
         /// <summary>
