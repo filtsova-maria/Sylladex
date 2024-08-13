@@ -5,7 +5,7 @@ namespace Sylladex.Managers
 {
     public static class GameManager
     {
-        public static float TotalSeconds { get; set; }
+        public static float DeltaTime { get; set; }
         public static TextureManager? TextureManager { get; set; }
         public static FontManager? FontManager { get; set; }
         public static AnimationManager? AnimationManager { get; set; }
@@ -25,7 +25,7 @@ namespace Sylladex.Managers
         /// <param name="gt">The GameTime object containing the elapsed game time.</param>
         public static void Update(GameTime gt)
         {
-            TotalSeconds = (float)gt.ElapsedGameTime.TotalSeconds;
+            DeltaTime = (float)gt.ElapsedGameTime.TotalSeconds;
         }
     }
 }

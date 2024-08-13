@@ -76,10 +76,10 @@ namespace Sylladex.Core
             GameManager.EntityManager.AddObject("sword", new Item("Sword", GameManager.TextureManager.GetObject("sword"), new Vector2(100,100)));
             // Load the input controls
             Player player = (Player)GameManager.EntityManager.GetObject("player");
-            GameManager.InputManager!.AddObject(Keys.Up, () => player.Move(0, Direction.Up));
-            GameManager.InputManager.AddObject(Keys.Down, () => player.Move(0, Direction.Down));
-            GameManager.InputManager.AddObject(Keys.Left, () => player.Move(Direction.Left, 0));
-            GameManager.InputManager.AddObject(Keys.Right, () => player.Move(Direction.Right, 0));
+            GameManager.InputManager!.AddObject(Keys.Up, () => player.Move(HorizontalDirection.None, VerticalDirection.Up));
+            GameManager.InputManager.AddObject(Keys.Down, () => player.Move(HorizontalDirection.None, VerticalDirection.Down));
+            GameManager.InputManager.AddObject(Keys.Left, () => player.Move(HorizontalDirection.Left, VerticalDirection.None));
+            GameManager.InputManager.AddObject(Keys.Right, () => player.Move(HorizontalDirection.Right, VerticalDirection.None));
             // Play the game soundtrack
             GameManager.SoundtrackManager!.Play("game", true);
         }

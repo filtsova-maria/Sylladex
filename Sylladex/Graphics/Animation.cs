@@ -73,7 +73,7 @@ namespace Sylladex.Graphics
         {
             if (!_active) return;
 
-            _frameTimeLeft -= GameManager.TotalSeconds;
+            _frameTimeLeft -= GameManager.DeltaTime;
 
             if (_frameTimeLeft <= 0)
             {

@@ -36,7 +36,7 @@ namespace Sylladex.Entities
         {
             if (IsAnimating && CurrentAnimation is not null)
             {
-                CurrentAnimation.Draw(DrawPosition, LayerIndex.Depth, Direction == Direction.Left);
+                CurrentAnimation.Draw(DrawPosition, LayerIndex.Depth, Direction == HorizontalDirection.Left);
             }
             else
             {

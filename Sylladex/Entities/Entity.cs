@@ -24,7 +24,7 @@ namespace Sylladex.Entities
         /// <summary>
         /// Gets or sets the direction of the entity. Sprites are assumed to be facing right unless flipped.
         /// </summary>
-        public Direction Direction { get; set; } = Direction.Right;
+        public HorizontalDirection Direction { get; set; } = HorizontalDirection.Right;
 
         /// <summary>
         /// Gets or sets the opacity of the entity.

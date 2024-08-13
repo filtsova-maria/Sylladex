@@ -53,7 +53,7 @@ namespace Sylladex.Graphics
                 Vector2.Zero,
                 Vector2.One,
                 // All sprites are assumed to face right by default so they are flipped to be consistent with the direction.
-                _owner.Direction == Direction.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+                _owner.Direction == HorizontalDirection.Left ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
                 _owner.LayerIndex.Depth
              );
         }
