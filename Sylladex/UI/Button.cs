@@ -23,7 +23,7 @@ namespace Sylladex.UI
         /// </summary>
         public bool IsEnabled { get; set; }
 
-        public Button(Texture2D texture, int width, int height, string? text, Color? color = null, Color? textColor = null, SpriteFont? font = null, float? opacity = 1f, bool enabled = true, Color? hoverColor = null, Color? disabledColor = null)
+        public Button(Texture2D texture, int width, int height, string? text = null, Color? color = null, Color? textColor = null, SpriteFont? font = null, float? opacity = 1f, bool enabled = true, Color? hoverColor = null, Color? disabledColor = null)
         {
             Texture = texture;
             Width = width;
@@ -71,11 +71,10 @@ namespace Sylladex.UI
             {
                 Vector2 textSize = _font.MeasureString(_text);
                 Vector2 textPosition = new Vector2((int)(Bounds.Center.X - textSize.X / 2), (int)(Bounds.Center.Y - textSize.Y / 2));
-                GameManager.SpriteBatch.DrawString(_font, _text, textPosition, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (LayerIndex+1).Depth);
+                GameManager.SpriteBatch.DrawString(_font, _text, textPosition, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (LayerIndex + 1).Depth);
             }
         }
     }
-    // TODO: label component
     // TODO: settings window
     // TODO: implement sylladex UI, layout calculations
 }

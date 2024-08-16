@@ -50,7 +50,17 @@ namespace Sylladex.Entities
             {
                 throw new System.Exception($"{GetType().Name}: Entity sprite was not set.");
             }
-            GameManager.SpriteBatch!.Draw(Sprite.Texture, DrawPosition, null, Sprite.Tint, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, LayerIndex.Depth);
+            GameManager.SpriteBatch!.Draw(
+                Sprite.Texture,
+                new Vector2((int)DrawPosition.X,(int)DrawPosition.Y), // Round the draw position to prevent subpixel rendering
+                null,
+                Sprite.Tint,
+                0f,
+                Vector2.Zero,
+                Vector2.One,
+                SpriteEffects.None,
+                LayerIndex.Depth
+            );
         }
 
         public override string ToString()

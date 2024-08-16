@@ -40,7 +40,7 @@ namespace Sylladex.Core
         {
             // Load the textures
             GameManager.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            string[] textures = { "player", "playerMove", "floor", "controlDeck", "itemCard", "sword", "settingsIcon", "pixelBase" };
+            string[] textures = { "player", "playerMove", "floor", "controlDeck", "itemCard", "sword", "shield", "helmet", "potion", "settingsIcon", "pixelBase" };
             foreach (var texture in textures)
             {
                 GameManager.TextureManager!.AddObject(texture, Content.Load<Texture2D>(texture));
@@ -64,17 +64,20 @@ namespace Sylladex.Core
             {
                 GameManager.SoundEffectManager!.AddObject(soundEffect, Content.Load<SoundEffect>(soundEffect));
             }
-            // Load the UI elements
-            GameManager.CanvasManager!.AddObject("background", new Canvas(Content.Load<Texture2D>("floor"), 0, true));
-
-            Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 60, 300, 100, new Vector2(0, GameManager.Graphics!.PreferredBackBufferHeight - 100), true, color: Color.Chartreuse);
+            // Load the UI windows and elements
+            Canvas Background = new Canvas(GameManager.TextureManager.GetObject("floor"), 0, true);
+            GameManager.CanvasManager!.AddObject("background", Background);
+            Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 60, GameManager.Graphics!.PreferredBackBufferWidth, 100, new Vector2(0, GameManager.Graphics.PreferredBackBufferHeight - 100), true, color: Color.Black, opacity: 0.5f);
             GameManager.CanvasManager.AddObject("inventoryHUD", HUD);
-            new Label(GameManager.FontManager!.GetObject("main"), "Sylladex:", Color.White).In(HUD).At(new Vector2(0, HUD.Height - GameManager.FontManager!.GetObject("main").LineSpacing));
-            new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50, text: "Hello!").In(HUD).At(new Vector2(150, 50));
+            new Label(GameManager.FontManager!.GetObject("main"), "Sylladex:", Color.White, backgroundOpacity: 0.5f).In(HUD).At(new Vector2(0, HUD.Height - GameManager.FontManager!.GetObject("main").LineSpacing));
+            new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50).In(Background).At(new Vector2(GameManager.Graphics.PreferredBackBufferWidth - 50, 0));
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
             GameManager.EntityManager!.AddObject("player", new Player(initPlayerPosition));
-            GameManager.EntityManager.AddObject("sword", new Item("Sword", GameManager.TextureManager.GetObject("sword"), new Vector2(100,100)));
+            GameManager.EntityManager.AddObject("sword", new Item("Sword", GameManager.TextureManager.GetObject("sword"), new Vector2(100, 250)));
+            GameManager.EntityManager.AddObject("shield", new Item("Shield", GameManager.TextureManager.GetObject("shield"), new Vector2(300, 250)));
+            GameManager.EntityManager.AddObject("potion", new Item("Potion", GameManager.TextureManager.GetObject("potion"), new Vector2(500, 250)));
+            GameManager.EntityManager.AddObject("helmet", new Item("Helmet", GameManager.TextureManager.GetObject("helmet"), new Vector2(700, 250)));
             // Load the input controls
             Player player = (Player)GameManager.EntityManager.GetObject("player");
             GameManager.InputManager!.AddObject(Keys.Up, () => player.Move(HorizontalDirection.None, VerticalDirection.Up));
