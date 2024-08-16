@@ -5,6 +5,14 @@ using Sylladex.Graphics;
 
 namespace Sylladex.UI
 {
+    public enum Alignment
+    {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight,
+        Center,
+    }
     /// <summary>
     /// Represents a base UI element, needs to be placed via <see cref="UIElementExtensions.In"/>.
     /// </summary>
@@ -90,12 +98,12 @@ namespace Sylladex.UI
         /// <summary>
         /// Sets the position of the UI element relative to the owner container.
         /// </summary>
-        /// <param name="position">The position relative to the owner container.</param>
+        /// <param name="relativePosition">The position relative to the owner container.</param>
         /// <returns>The UI element with the updated position.</returns>
-        public T At(Vector2 position)
+        public T At(Vector2 relativePosition, Alignment alignment=Alignment.TopLeft)
         {
-            Element.Position = position;
-            return Owner?.SetPosition(Element, position) ?? Element;
+            Element.Position = relativePosition;
+            return Owner?.SetPosition(Element, relativePosition, alignment) ?? Element;
         }
 
         /// <summary>

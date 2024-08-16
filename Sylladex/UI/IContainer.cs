@@ -11,7 +11,7 @@ namespace Sylladex.UI
         // <summary>
         // Sets the position of the child element.
         // </summary>
-        public T SetPosition<T>(T child, Vector2 position) where T : UIElement;
+        public T SetPosition<T>(T child, Vector2 position, Alignment alignment) where T : UIElement;
         /// <summary>
         /// Only visible containers get rendered on the screen in the <c>Draw</c> cycle.
         /// </summary>

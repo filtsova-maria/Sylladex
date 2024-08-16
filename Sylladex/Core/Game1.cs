@@ -67,10 +67,14 @@ namespace Sylladex.Core
             // Load the UI windows and elements
             Canvas Background = new Canvas(GameManager.TextureManager.GetObject("floor"), 0, true);
             GameManager.CanvasManager!.AddObject("background", Background);
-            Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 60, GameManager.Graphics!.PreferredBackBufferWidth, 100, new Vector2(0, GameManager.Graphics.PreferredBackBufferHeight - 100), true, color: Color.Black, opacity: 0.5f);
+            Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 60, GameManager.Graphics!.PreferredBackBufferWidth, 100, Vector2.Zero, alignment: Alignment.BottomLeft, visible: true, color: Color.Black, opacity: 0.5f);
             GameManager.CanvasManager.AddObject("inventoryHUD", HUD);
-            new Label(GameManager.FontManager!.GetObject("main"), "Sylladex:", Color.White, backgroundOpacity: 0.5f).In(HUD).At(new Vector2(0, HUD.Height - GameManager.FontManager!.GetObject("main").LineSpacing));
-            new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50).In(Background).At(new Vector2(GameManager.Graphics.PreferredBackBufferWidth - 50, 0));
+            new Label(GameManager.FontManager!.GetObject("main"), "Sylladex:", Color.White, backgroundOpacity: 0.5f)
+                .In(HUD)
+                .At(Vector2.Zero, Alignment.BottomLeft);
+            new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50)
+                .In(Background)
+                .At(Vector2.Zero, Alignment.TopRight);
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
             GameManager.EntityManager!.AddObject("player", new Player(initPlayerPosition));

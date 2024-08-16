@@ -28,7 +28,7 @@ namespace Sylladex.UI
         public int Width => _width;
         public int Height => _height;
 
-        // Stores the child elements of the canvas and their relative positions.
+        // Stores the child elements of the canvas and their absolute positions.
         private readonly Dictionary<UIElement, Vector2> _children = new Dictionary<UIElement, Vector2>();
 
         private bool _visible;
@@ -74,12 +74,20 @@ namespace Sylladex.UI
         /// <param name="visible">Whether the canvas is visible or not.</param>
         /// <param name="opacity">The opacity of the canvas.</param>
         /// <param name="color">The tint color of the canvas.</param>
-        public Canvas(Texture2D texture, int layerIndex, int width, int height, Vector2 position, bool visible = false, float opacity = 1, Color? color = null)
+        public Canvas(Texture2D texture, int layerIndex, int width, int height, Vector2 position, Alignment alignment = Alignment.Center, bool visible = false, float opacity = 1, Color? color = null)
         {
             Texture = texture;
             _width = width;
             _height = height;
-            Position = position;
+            Position = alignment switch
+            {
+                Alignment.TopLeft => position,
+                Alignment.TopRight => new Vector2(position.X + GameManager.Graphics!.PreferredBackBufferWidth - width, position.Y),
+                Alignment.BottomLeft => new Vector2(position.X, position.Y + GameManager.Graphics!.PreferredBackBufferHeight - height),
+                Alignment.BottomRight => new Vector2(position.X + GameManager.Graphics!.PreferredBackBufferWidth - width, position.Y + GameManager.Graphics!.PreferredBackBufferHeight - height),
+                Alignment.Center => new Vector2(position.X + (GameManager.Graphics!.PreferredBackBufferWidth - width) / 2, position.Y + (GameManager.Graphics!.PreferredBackBufferHeight - height) / 2),
+                _ => position
+            };
             _visible = visible;
             LayerIndex = new LayerIndex(layerIndex);
             Opacity = opacity;
@@ -130,10 +138,19 @@ namespace Sylladex.UI
         /// <param name="child">The child element to set the position for.</param>
         /// <param name="relativePosition">The relative position of the child element.</param>
         /// <returns>The child element with the updated position.</returns>
-        public T SetPosition<T>(T child, Vector2 relativePosition) where T : UIElement
+        public T SetPosition<T>(T child, Vector2 relativePosition, Alignment alignment) where T : UIElement
         {
-            _children[child] = relativePosition;
-            child.Position = Position + relativePosition;
+            Vector2 position = alignment switch
+            {
+                Alignment.TopLeft => Position + relativePosition,
+                Alignment.TopRight => Position + new Vector2(_width - child.Width - relativePosition.X, relativePosition.Y),
+                Alignment.BottomLeft => Position + new Vector2(relativePosition.X, _height - child.Height - relativePosition.Y),
+                Alignment.BottomRight => Position + new Vector2(_width - child.Width - relativePosition.X, _height - child.Height - relativePosition.Y),
+                Alignment.Center => Position + new Vector2((_width - child.Width) / 2 + relativePosition.X, (_height - child.Height) / 2 + relativePosition.Y),
+                _ => Position + relativePosition
+            };
+            _children[child] = position;
+            child.Position = position;
             // We need to set the UIElement bounding box to respect the absolute position of the element on the screen.
             // It can only be properly calculated here from the given relative position.
             // This ensures correct texture rendering in the child's `Draw` method.
