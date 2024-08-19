@@ -80,6 +80,7 @@ namespace Sylladex.Core
             new Button(GameManager.TextureManager.GetObject("cross"), 50, 50, () => GameManager.CanvasManager.HideCanvas("settingsMenu"), hoverColor: Color.Red)
                 .In(SettingsMenu)
                 .At(Vector2.Zero, Alignment.TopRight);
+            // add buttons to select sylladex mode and customize it
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
             GameManager.EntityManager!.AddObject("player", new Player(initPlayerPosition));
@@ -97,6 +98,7 @@ namespace Sylladex.Core
             GameManager.SoundtrackManager!.Play("game", true);
         }
 
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -104,8 +106,8 @@ namespace Sylladex.Core
 
             GameManager.Update(gameTime);
             GameManager.EntityManager!.Update();
-            GameManager.InputManager!.Update();
             GameManager.CanvasManager!.Update();
+            GameManager.InputManager!.Update();
 
             base.Update(gameTime);
         }

@@ -74,6 +74,4 @@ namespace Sylladex.UI
             }
         }
     }
-    // TODO: settings window
-    // TODO: Sylladex state management
 }

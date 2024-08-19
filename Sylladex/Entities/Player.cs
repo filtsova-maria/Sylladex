@@ -81,5 +81,21 @@ namespace Sylladex.Entities
                 DrawPosition = new Vector2(DrawPosition.X, newY);
             }
         }
+        // TODO: abstract Sylladex logic
+        public Item InsertItem(Item item)
+        {
+            _inventory.Add(item);
+            return item;
+        }
+        public Item FetchItem(int index)
+        {
+            if (index < 0 || index >= _inventory.Count)
+            {
+                return null;
+            }
+            Item item = _inventory[index];
+            _inventory.RemoveAt(index);
+            return item;
+        }
     }
 }
