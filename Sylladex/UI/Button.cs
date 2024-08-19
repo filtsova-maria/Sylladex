@@ -76,5 +76,5 @@ namespace Sylladex.UI
         }
     }
     // TODO: settings window
-    // TODO: implement sylladex UI, layout calculations
+    // TODO: Sylladex state management
 }
