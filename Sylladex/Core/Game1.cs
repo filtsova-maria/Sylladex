@@ -40,7 +40,7 @@ namespace Sylladex.Core
         {
             // Load the textures
             GameManager.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            string[] textures = { "player", "playerMove", "floor", "controlDeck", "itemCard", "sword", "shield", "helmet", "potion", "settingsIcon", "pixelBase" };
+            string[] textures = { "player", "playerMove", "floor", "controlDeck", "itemCard", "sword", "shield", "helmet", "potion", "settingsIcon", "pixelBase", "cross", "eButton" };
             foreach (var texture in textures)
             {
                 GameManager.TextureManager!.AddObject(texture, Content.Load<Texture2D>(texture));
@@ -67,13 +67,18 @@ namespace Sylladex.Core
             // Load the UI windows and elements
             Canvas Background = new Canvas(GameManager.TextureManager.GetObject("floor"), 0, true);
             GameManager.CanvasManager!.AddObject("background", Background);
-            Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 60, GameManager.Graphics!.PreferredBackBufferWidth, 100, Vector2.Zero, alignment: Alignment.BottomLeft, visible: true, color: Color.Black, opacity: 0.5f);
+            Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 51, GameManager.Graphics!.PreferredBackBufferWidth, 100, Vector2.Zero, alignment: Alignment.BottomLeft, visible: true, color: Color.Black, opacity: 0.5f);
             GameManager.CanvasManager.AddObject("inventoryHUD", HUD);
             new Label(GameManager.FontManager!.GetObject("main"), "Sylladex:", Color.White, backgroundOpacity: 0.5f)
                 .In(HUD)
                 .At(Vector2.Zero, Alignment.BottomLeft);
-            new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50)
+            new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50, () => GameManager.CanvasManager.ShowCanvas("settingsMenu"))
                 .In(Background)
+                .At(Vector2.Zero, Alignment.TopRight);
+            Canvas SettingsMenu = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 52, 500, 500, Vector2.Zero, alignment: Alignment.Center);
+            GameManager.CanvasManager.AddObject("settingsMenu", SettingsMenu);
+            new Button(GameManager.TextureManager.GetObject("cross"), 50, 50, () => GameManager.CanvasManager.HideCanvas("settingsMenu"), hoverColor: Color.Red)
+                .In(SettingsMenu)
                 .At(Vector2.Zero, Alignment.TopRight);
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);

@@ -2,7 +2,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Sylladex.Managers;
 using System;
-using System.Diagnostics;
 
 namespace Sylladex.UI
 {
@@ -23,7 +22,7 @@ namespace Sylladex.UI
         /// </summary>
         public bool IsEnabled { get; set; }
 
-        public Button(Texture2D texture, int width, int height, string? text = null, Color? color = null, Color? textColor = null, SpriteFont? font = null, float? opacity = 1f, bool enabled = true, Color? hoverColor = null, Color? disabledColor = null)
+        public Button(Texture2D texture, int width, int height, Action onClick, string? text = null, Color? color = null, Color? textColor = null, SpriteFont? font = null, float? opacity = 1f, bool enabled = true, Color? hoverColor = null, Color? disabledColor = null)
         {
             Texture = texture;
             Width = width;
@@ -36,6 +35,7 @@ namespace Sylladex.UI
             _font = font ?? GameManager.FontManager!.GetObject("main");
             _text = text;
             _textColor = textColor ?? Color.Black;
+            _onClick = onClick;
         }
 
         /// <summary>
@@ -46,7 +46,6 @@ namespace Sylladex.UI
             if (IsEnabled && IsPressed())
             {
                 _onClick?.Invoke();
-                Debug.WriteLine("Button pressed!");
             }
         }
 

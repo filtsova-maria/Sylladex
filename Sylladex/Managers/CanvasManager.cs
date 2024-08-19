@@ -35,5 +35,9 @@ namespace Sylladex.Managers
                 }
             }
         }
+
+        public void ShowCanvas(string name) => GetObject(name).Show();
+        public void HideCanvas(string name) => GetObject(name).Hide();
+
     }
 }
