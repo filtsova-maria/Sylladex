@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Sylladex.Entities;
 using Sylladex.Managers;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Sylladex.UI
 {
@@ -10,30 +11,33 @@ namespace Sylladex.UI
     {
         private IItem? _item;
         private readonly SpriteFont _font;
-        private string? _text;
-        private Vector2 _position;
-        private Vector2 _itemPosition;
-        private Vector2 _textPosition;
         private readonly Texture2D _texture;
         private Color _cardColor;
-        public bool Enabled { get; set; } = true;
+        private readonly float _itemTextureScale = 0.5f;
+        public bool IsEnabled { get; set; } = true;
 
-        public SylladexCard(IItem? item, Vector2 position, Color cardColor)
+        public SylladexCard(IItem? item, Color cardColor)
         {
             _item = item;
             _font = GameManager.FontManager!.GetObject("main");
-            _text = item?.Name;
-            _position = position;
             _texture = GameManager.TextureManager!.GetObject("itemCard");
-            _itemPosition = TextureManager.GetTextureCenter(_texture, _position);
-            _textPosition = new Vector2(_itemPosition.X, (int)(_itemPosition.Y + _texture.Height / 2 + 10));
             _cardColor = cardColor;
+            Width = _texture.Width;
+            Height = _texture.Height;
         }
+
+        private Vector2 ItemPosition =>
+            Position
+            + TextureManager.GetTextureCenter(_texture)
+            - TextureManager.GetTextureCenter(_item!.Texture) * _itemTextureScale;
+        private Vector2 TextPosition => new Vector2(
+            (int)(ItemPosition.X + _item!.Texture.Width * _itemTextureScale / 2 - _font.MeasureString(_item.Name).X / 2),
+            (int)(ItemPosition.Y + _item!.Texture.Height * _itemTextureScale)
+            );
 
         public void SetItem(IItem item)
         {
             _item = item;
-            _text = item.Name;
         }
 
         public override void Update()
@@ -42,11 +46,42 @@ namespace Sylladex.UI
 
         public override void Draw()
         {
-            GameManager.SpriteBatch!.Draw(_texture, _position, Enabled ? _cardColor : Color.DarkGray);
+            Color cardColor = IsEnabled ? (IsPressed() || IsHovered() ? Color.DarkGray : _cardColor) : Color.DarkGray;
+            GameManager.SpriteBatch!.Draw(
+                _texture,
+                new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height),
+                null,
+                cardColor,
+                0f,
+                Vector2.Zero,
+                SpriteEffects.None,
+                LayerIndex.Depth
+            );
+
             if (_item is not null)
             {
-                GameManager.SpriteBatch.Draw(_item.Texture, _itemPosition, Enabled ? Color.White : Color.DarkGray);
-                GameManager.SpriteBatch.DrawString(_font, _text, _textPosition, Color.Black);
+                GameManager.SpriteBatch!.Draw(
+                    _item.Texture,
+                    ItemPosition,
+                    null,
+                    IsEnabled ? Color.White : Color.DarkGray,
+                    0f,
+                    Vector2.Zero,
+                    0.5f,
+                    SpriteEffects.None,
+                    (LayerIndex + 1).Depth
+                );
+                GameManager.SpriteBatch.DrawString(
+                    _font,
+                    _item.Name,
+                    TextPosition,
+                    Color.Black,
+                    0f,
+                    Vector2.Zero,
+                    1f,
+                    SpriteEffects.None,
+                    (LayerIndex + 2).Depth
+                 );
             }
         }
     }
@@ -64,11 +99,11 @@ namespace Sylladex.UI
             }
         }
     }
-    public abstract class Sylladex
+    public abstract class SylladexBase
     {
         private List<IItem> _items;
         public Color Tint { get; set; } = Color.White;
-        public Sylladex(ref List<IItem> items)
+        public SylladexBase(ref List<IItem> items)
         {
             _items = items;
         }
@@ -84,7 +119,7 @@ namespace Sylladex.UI
         }
     }
 
-    public class QueueSylladex : Sylladex
+    public class QueueSylladex : SylladexBase
     {
         private Queue<IItem> _items;
 
@@ -105,7 +140,7 @@ namespace Sylladex.UI
         }
     }
 
-    public class StackSylladex : Sylladex
+    public class StackSylladex : SylladexBase
     {
         private Stack<IItem> _items;
 
@@ -128,7 +163,5 @@ namespace Sylladex.UI
 }
 
 // Modus name:
-//-Display function(default: linear)
-//- Rules around using a static number of cards (default: uses cards in-place)
 //- Captcha function (default: first available emptiest space, otherwise first card, or append to end)
 //- Fetch function (default: all cards)

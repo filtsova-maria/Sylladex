@@ -15,7 +15,8 @@ namespace Sylladex.Managers
         public static CanvasManager? CanvasManager { get; set; }
         public static InputManager? InputManager { get; set; }
         public static CollisionManager? CollisionManager { get; set; }
-
+        public static SylladexManager? SylladexManager { get; set; }
+        
         public static SpriteBatch? SpriteBatch { get; set; }
         public static GraphicsDeviceManager? Graphics { get; set; }
 

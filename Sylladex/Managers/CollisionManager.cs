@@ -3,6 +3,9 @@ using System;
 
 namespace Sylladex.Managers
 {
+    /// <summary>
+    /// Manages collision detection between entities.
+    /// </summary>
     public class CollisionManager: ObjectManager<Entity>
     {
         public static bool IsInRadius(Entity entity1, Entity entity2, float radius)

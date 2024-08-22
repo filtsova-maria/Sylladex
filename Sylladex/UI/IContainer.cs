@@ -16,5 +16,7 @@ namespace Sylladex.UI
         /// Only visible containers get rendered on the screen in the <c>Draw</c> cycle.
         /// </summary>
         public bool IsVisible { get; set; }
+        public int Width { get; }
+        public int Height { get; }
     }
 }

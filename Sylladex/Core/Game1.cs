@@ -25,6 +25,7 @@ namespace Sylladex.Core
             GameManager.EntityManager = new EntityManager();
             GameManager.CanvasManager = new CanvasManager();
             GameManager.InputManager = new InputManager();
+            GameManager.CollisionManager = new CollisionManager();
         }
 
         protected override void Initialize()
@@ -80,7 +81,18 @@ namespace Sylladex.Core
             new Button(GameManager.TextureManager.GetObject("cross"), 50, 50, () => GameManager.CanvasManager.HideCanvas("settingsMenu"), hoverColor: Color.Red)
                 .In(SettingsMenu)
                 .At(Vector2.Zero, Alignment.TopRight);
-            // add buttons to select sylladex mode and customize it
+            int CardWidth = GameManager.TextureManager.GetObject("itemCard").Width;
+            int CardPadding = 10;
+            DisplayLayout layout = new DisplayLayout(new Vector2(-(SylladexManager.NumberOfCards * (CardWidth + CardPadding)) / 2, 0), SylladexManager.NumberOfCards, CardWidth, CardPadding);
+            foreach (var position in layout.Positions)
+            {
+                new SylladexCard(null, Color.White)
+                    .In(HUD)
+                    .At(position, Alignment.Center);
+            }
+            // TODO: implement item take by player (array sylladex)
+            // TODO: add buttons to select sylladex mode and customize it
+            // TODO: pass current player's inventory and fetch modus somehow
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
             GameManager.EntityManager!.AddObject("player", new Player(initPlayerPosition));
@@ -97,7 +109,6 @@ namespace Sylladex.Core
             // Play the game soundtrack
             GameManager.SoundtrackManager!.Play("game", true);
         }
-
 
         protected override void Update(GameTime gameTime)
         {

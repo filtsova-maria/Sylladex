@@ -123,7 +123,7 @@ namespace Sylladex.UI
             child.Owner = this;
             child.Opacity = child.Opacity ?? Opacity;
             // The child will be placed at the top-left corner of the canvas by default until `At` is called.
-            _children.Add(child, this.Position);
+            _children.Add(child, Position);
             child.Position = Position;
             // Set relative layer of the child element.
             child.LayerIndex = LayerIndex + _children.Count;
