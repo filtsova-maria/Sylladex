@@ -14,12 +14,20 @@ namespace Sylladex.Entities
         /// Gets or sets the draw position of the entity.
         /// </summary>
         public Vector2 DrawPosition { get; set; }
-        public Vector2 Position => Sprite is not null ? TextureManager.GetTextureCenter(Sprite.Texture, DrawPosition) : DrawPosition;
-        public float BottomPosition => DrawPosition.Y + (Sprite?.Texture.Height ?? 0); // Bottom of the entity sprite, used to determine ground contact
+
+        /// <summary>
+        /// Gets or sets the position of the entity.
+        /// </summary>
+        public Vector2 Position
+        {
+            get => TextureManager.GetTextureCenter(Sprite.Texture, DrawPosition);
+            set => DrawPosition = value;
+        }
+        public float BottomPosition => DrawPosition.Y + Sprite.Texture.Height; // Bottom of the entity sprite, used to determine ground contact
         /// <summary>
         /// Gets the sprite associated with the entity.
         /// </summary>
-        protected Sprite? Sprite { get; init; }
+        protected Sprite Sprite { get; init; } = null!;
 
         /// <summary>
         /// Gets or sets the direction of the entity. Sprites are assumed to be facing right unless flipped.
@@ -50,7 +58,7 @@ namespace Sylladex.Entities
             {
                 throw new System.Exception($"{GetType().Name}: Entity sprite was not set.");
             }
-            GameManager.SpriteBatch!.Draw(
+            GameManager.SpriteBatch.Draw(
                 Sprite.Texture,
                 new Vector2((int)DrawPosition.X,(int)DrawPosition.Y), // Round the draw position to prevent subpixel rendering
                 null,

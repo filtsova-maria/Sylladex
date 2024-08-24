@@ -1,24 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Sylladex.Graphics;
 using Sylladex.Managers;
 
 namespace Sylladex.Entities
 {
-    public interface IItem
-    {
-        string Name { get; }
-        Texture2D Texture { get; }
-    }
-    public class Item : Entity, IItem
+    public class Item : Entity
     {
         public string Name { get; }
         public Texture2D Texture { get; }
-        private const float _pickupRadius = 100;
-        private readonly Texture2D _tooltipTexture = GameManager.TextureManager!.GetObject("eButton");
+        private const float _pickupRadius = 50;
+        private readonly Texture2D _tooltipTexture = GameManager.TextureManager.GetObject("eButton");
         private readonly Vector2 _tooltipPosition;
         private readonly Vector2 _namePosition;
-        private readonly SpriteFont _font = GameManager.FontManager!.GetObject("main");
+        private readonly SpriteFont _font = GameManager.FontManager.GetObject("main");
 
         public Item(string name, Texture2D texture, Vector2 position = default)
         {
@@ -28,22 +24,27 @@ namespace Sylladex.Entities
             DrawPosition = position;
             _tooltipPosition = new Vector2((int)DrawPosition.X + 25, (int)DrawPosition.Y - 25);
             _namePosition = new Vector2((int)(DrawPosition.X + Texture.Width / 2), BottomPosition + 5);
-        }
+            GameManager.InputManager.AddAction(Keys.E, () =>
+            {
+                GameManager.SylladexManager.InsertItem(this);
+                GameManager.EntityManager.RemoveObject(Name);
+            }, () => CollisionManager.IsInRadius(this, GameManager.EntityManager.GetObject("player"), _pickupRadius), this);
+        } 
         public override void Update()
         {
-            if (CollisionManager.IsInRadius(this, GameManager.EntityManager!.GetObject("player"), _pickupRadius))
+            if (CollisionManager.IsInRadius(this, GameManager.EntityManager.GetObject("player"), _pickupRadius))
             {
-                Sprite!.Tint = Color.GreenYellow; // Indicates that the item can be picked up
+                Sprite.Tint = Color.GreenYellow; // Indicates that the item can be picked up
             }
             else
             {
-                Sprite!.Tint = Color.White;
+                Sprite.Tint = Color.White;
             }
         }
         public override void Draw()
         {
             base.Draw();
-            GameManager.SpriteBatch!.DrawString(
+            GameManager.SpriteBatch.DrawString(
                 _font,
                 Name,
                 _namePosition,
@@ -54,9 +55,9 @@ namespace Sylladex.Entities
                 SpriteEffects.None,
                 LayerIndex.Depth
             );
-            if (CollisionManager.IsInRadius(this, GameManager.EntityManager!.GetObject("player"), _pickupRadius))
+            if (CollisionManager.IsInRadius(this, GameManager.EntityManager.GetObject("player"), _pickupRadius))
             {
-                GameManager.SpriteBatch!.Draw(
+                GameManager.SpriteBatch.Draw(
                    _tooltipTexture,
                    _tooltipPosition,
                    null,

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -7,7 +9,7 @@ namespace Sylladex.Managers
     /// <summary>
     /// Manages user keyboard and mouse input.
     /// </summary>
-    public class InputManager : ObjectManager<Keys, Action>
+    public class InputManager : ObjectManager<Keys, List<(Action action, Func<bool>? condition, object? context)>>
     {
         /// <summary>
         /// Current state of the mouse.
@@ -30,16 +32,52 @@ namespace Sylladex.Managers
         public static Rectangle MouseCursor { get; private set; }
 
         /// <summary>
+        /// Add an action binding for a key.
+        /// </summary>
+        public void AddAction(Keys key, Action action, Func<bool>? condition = null, object? context = null)
+        {
+            if (_objects.ContainsKey(key))
+            {
+                _objects[key].Add((action, condition, context));
+            }
+            else
+            {
+                _objects[key] = new List<(Action action, Func<bool>? condition, object? context)> { (action, condition, context) };
+            }
+        }
+        /// <summary>
+        /// Removes all key bindings for given context. Used for cleaning up when a game object is removed.
+        /// </summary>
+        public void RemoveActionsFromEntity(object? context)
+        {
+            if (context is null)
+            {
+                return;
+            }
+            foreach (var key in _objects.Keys)
+            {
+                _objects[key].RemoveAll(x => x.context == context);
+            }
+        }
+
+        /// <summary>
         /// Checks for keyboard and mouse input.
         /// </summary>
         public void Update()
         {
             KeyboardState kstate = Keyboard.GetState();
-            foreach (var key in _objects)
+            foreach (var key in _objects.Keys)
             {
-                if (kstate.IsKeyDown(key.Key))
+                if (kstate.IsKeyDown(key))
                 {
-                    key.Value();
+                    var actions = _objects[key].ToList(); // Create a copy to avoid concurrent modification
+                    foreach (var (action, condition, _) in actions)
+                    {
+                        if (condition is null || condition())
+                        {
+                            action();
+                        }
+                    }
                 }
             }
 

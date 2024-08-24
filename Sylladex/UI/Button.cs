@@ -32,7 +32,7 @@ namespace Sylladex.UI
             _hoverColor = hoverColor ?? Color.Gray;
             _disabledColor = disabledColor ?? Color.DarkGray;
             IsEnabled = enabled;
-            _font = font ?? GameManager.FontManager!.GetObject("main");
+            _font = font ?? GameManager.FontManager.GetObject("main");
             _text = text;
             _textColor = textColor ?? Color.Black;
             _onClick = onClick;
@@ -55,7 +55,7 @@ namespace Sylladex.UI
         public override void Draw()
         {
             Color buttonColor = IsEnabled ? (IsPressed() || IsHovered() ? _hoverColor : Tint ?? Color.White) : _disabledColor;
-            GameManager.SpriteBatch!.Draw(
+            GameManager.SpriteBatch.Draw(
                 Texture,
                 Bounds,
                 OriginalBounds,

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Sylladex.Graphics;
 using Sylladex.Managers;
-using System.Collections.Generic;
 
 namespace Sylladex.Entities
 {
@@ -28,27 +27,16 @@ namespace Sylladex.Entities
     {
         private readonly Animation _moveAnimation;
         private readonly float _speed = 150F;
-        // TODO: Implement inventory system
-        private readonly List<Item> _inventory = new List<Item>();
         /// <summary>
         /// Initializes a new instance of the Player class.
         /// </summary>
         /// <param name="pos">The initial position of the player.</param>
         public Player(Vector2 pos)
         {
-            Sprite = new Sprite(this, GameManager.TextureManager!.GetObject("player"));
+            Sprite = new Sprite(this, GameManager.TextureManager.GetObject("player"));
             Direction = HorizontalDirection.Right;
             DrawPosition = pos;
-            _moveAnimation = GameManager.AnimationManager!.GetObject("playerMove");
-        }
-
-        /// <summary>
-        /// Updates the player entity.
-        /// </summary>
-        public override void Update()
-        {
-            // Call the base class's Update method to handle animation updates
-            base.Update();
+            _moveAnimation = GameManager.AnimationManager.GetObject("playerMove");
         }
 
         /// <summary>
@@ -62,7 +50,7 @@ namespace Sylladex.Entities
             IsAnimating = true;
             CurrentAnimation = _moveAnimation;
             // Play walking sound effect
-            GameManager.SoundEffectManager!.Play("footsteps");
+            GameManager.SoundEffectManager.Play("footsteps");
             // Calculate the new position with respect to game window border collisions
             float newX = DrawPosition.X + _speed * (int)xDirection * GameManager.DeltaTime;
             float newY = DrawPosition.Y + _speed * (int)yDirection * GameManager.DeltaTime;
@@ -71,31 +59,15 @@ namespace Sylladex.Entities
                 Direction = xDirection;
             }
 
-            if (newX >= 0 && newX <= GameManager.Graphics!.PreferredBackBufferWidth - Sprite?.GetWidth())
+            if (newX >= 0 && newX <= GameManager.Graphics.PreferredBackBufferWidth - Sprite.GetWidth())
             {
                 DrawPosition = new Vector2(newX, DrawPosition.Y);
             }
 
-            if (newY >= 0 && newY <= GameManager.Graphics!.PreferredBackBufferHeight - Sprite?.GetHeight())
+            if (newY >= 0 && newY <= GameManager.Graphics.PreferredBackBufferHeight - Sprite.GetHeight())
             {
                 DrawPosition = new Vector2(DrawPosition.X, newY);
             }
-        }
-        // TODO: abstract Sylladex logic
-        public Item InsertItem(Item item)
-        {
-            _inventory.Add(item);
-            return item;
-        }
-        public Item FetchItem(int index)
-        {
-            if (index < 0 || index >= _inventory.Count)
-            {
-                return null;
-            }
-            Item item = _inventory[index];
-            _inventory.RemoveAt(index);
-            return item;
         }
     }
 }

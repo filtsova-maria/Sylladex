@@ -40,7 +40,7 @@ namespace Sylladex.Entities
             }
             else
             {
-                Sprite!.Draw();
+                Sprite.Draw();
             }
         }
     }

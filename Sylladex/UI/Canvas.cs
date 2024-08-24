@@ -104,7 +104,7 @@ namespace Sylladex.UI
         public Canvas(Texture2D texture, int layerIndex, bool visible = false, float opacity = 1)
         {
             Texture = texture;
-            _width = GameManager.Graphics!.PreferredBackBufferWidth;
+            _width = GameManager.Graphics.PreferredBackBufferWidth;
             _height = GameManager.Graphics.PreferredBackBufferHeight;
             Position = Vector2.Zero;
             LayerIndex = new LayerIndex(layerIndex);
@@ -178,7 +178,7 @@ namespace Sylladex.UI
         /// </summary>
         public void Draw()
         {
-            GameManager.SpriteBatch!.Draw(
+            GameManager.SpriteBatch.Draw(
                 Texture,
                 new Rectangle((int)Position.X, (int)Position.Y, _width, _height),
                 null,

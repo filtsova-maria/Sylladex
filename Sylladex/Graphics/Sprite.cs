@@ -44,7 +44,7 @@ namespace Sylladex.Graphics
         /// <param name="tint">The color tint to apply to the sprite.</param>
         public void Draw()
         {
-            GameManager.SpriteBatch!.Draw(
+            GameManager.SpriteBatch.Draw(
                 Texture,
                 _owner.DrawPosition,
                 null,

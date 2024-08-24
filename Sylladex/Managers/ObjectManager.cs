@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Sylladex.Managers
 {
@@ -36,6 +39,18 @@ namespace Sylladex.Managers
             else
             {
                 throw new KeyNotFoundException($"'{typeof(TValue).GetType()}': Object with key '{key}' not found.");
+            }
+        }
+        /// <summary>
+        /// Remove an object and clean up its input bindings.
+        /// </summary>
+        public void RemoveObject(TKey key)
+        {
+            if (_objects.ContainsKey(key))
+            {
+                TValue gameObject = GetObject(key);
+                _objects.Remove(key);
+                GameManager.InputManager.RemoveActionsFromEntity(gameObject);
             }
         }
     }

@@ -46,18 +46,18 @@ namespace Sylladex.UI
         {
             if (_backgroundColor is not null)
             {
-                GameManager.SpriteBatch!.Draw(
-                    GameManager.TextureManager!.GetObject("pixelBase"),
+                GameManager.SpriteBatch.Draw(
+                    GameManager.TextureManager.GetObject("pixelBase"),
                     Bounds,
                     OriginalBounds,
-                    _backgroundColor!.Value * _backgroundOpacity,
+                    _backgroundColor.Value * _backgroundOpacity,
                     0f,
                     Vector2.Zero,
                     SpriteEffects.None,
                     LayerIndex.Depth
                 );
             }
-            GameManager.SpriteBatch!.DrawString(_font, _text, Position, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, LayerIndex.Depth + 0.1f);
+            GameManager.SpriteBatch.DrawString(_font, _text, Position, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, LayerIndex.Depth + 0.1f);
         }
     }
 }

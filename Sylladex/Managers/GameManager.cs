@@ -6,19 +6,19 @@ namespace Sylladex.Managers
     public static class GameManager
     {
         public static float DeltaTime { get; set; }
-        public static TextureManager? TextureManager { get; set; }
-        public static FontManager? FontManager { get; set; }
-        public static AnimationManager? AnimationManager { get; set; }
-        public static SoundEffectManager? SoundEffectManager { get; set; }
-        public static SoundtrackManager? SoundtrackManager { get; set; }
-        public static EntityManager? EntityManager { get; set; }
-        public static CanvasManager? CanvasManager { get; set; }
-        public static InputManager? InputManager { get; set; }
-        public static CollisionManager? CollisionManager { get; set; }
-        public static SylladexManager? SylladexManager { get; set; }
+        public static TextureManager TextureManager { get; set; } = null!;
+        public static FontManager FontManager { get; set; } = null!;
+        public static AnimationManager AnimationManager { get; set; } = null!;
+        public static SoundEffectManager SoundEffectManager { get; set; } = null!;
+        public static SoundtrackManager SoundtrackManager { get; set; } = null!;
+        public static EntityManager EntityManager { get; set; } = null!;
+        public static CanvasManager CanvasManager { get; set; } = null!;
+        public static InputManager InputManager { get; set; } = null!;
+        public static CollisionManager CollisionManager { get; set; } = null!;
+        public static SylladexManager SylladexManager { get; set; } = null!;
         
-        public static SpriteBatch? SpriteBatch { get; set; }
-        public static GraphicsDeviceManager? Graphics { get; set; }
+        public static   SpriteBatch SpriteBatch { get; set; } = null!;
+        public static GraphicsDeviceManager Graphics { get; set; } = null!;
 
         /// <summary>
         /// Updates TotalSeconds property based on the elapsed game time.

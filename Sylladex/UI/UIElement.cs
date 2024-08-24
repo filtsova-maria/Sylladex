@@ -45,7 +45,7 @@ namespace Sylladex.UI
             LayerIndex = new LayerIndex();
             Opacity = 1f;
             Tint = Color.White;
-            Texture = GameManager.TextureManager!.GetObject("pixelBase");
+            Texture = GameManager.TextureManager.GetObject("pixelBase");
         }
 
         public abstract void Update();
