@@ -73,7 +73,7 @@ namespace Sylladex.Core
             GameManager.CanvasManager.AddObject("inventoryHUD", HUD);
             new Label(GameManager.FontManager.GetObject("main"), "Sylladex:", Color.White, backgroundOpacity: 0.5f)
                 .In(HUD)
-                .At(Vector2.Zero, Alignment.BottomLeft);
+                .At(Vector2.Zero);
             new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50, () => GameManager.CanvasManager.ShowCanvas("settingsMenu"))
                 .In(Background)
                 .At(Vector2.Zero, Alignment.TopRight);
@@ -93,7 +93,7 @@ namespace Sylladex.Core
                     .At(position, Alignment.Center));
             }
             GameManager.SylladexManager = new SylladexManager(cards);
-            // TODO: design item flow
+            // TODO: design item flow 
             // TODO: implement item take by player (array sylladex)
             // TODO: add buttons to select sylladex mode and customize it
             // Load the entities

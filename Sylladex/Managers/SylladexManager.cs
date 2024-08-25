@@ -13,32 +13,42 @@ namespace Sylladex.Managers
     public class SylladexManager
     {
         public const int NumberOfCards = 3; // Number of inventory slots, can potentially made dynamic in the future
-        public FetchModus Modus { get; set; }
+        public SylladexModus FetchModus { get; set; }
+        public SylladexModus InsertModus { get; set; }
+        public SylladexModus DimensionModus { get; set; }
+        /// <summary>
+        /// UI representation of the inventory slots. Must be kept in sync with <c>SylladexManager.Items</c>.
+        /// </summary>
         public List<SylladexCard> Cards { get; set; }
+        /// <summary>
+        /// Logical representation of inventory slots. Acts as a single source of truth for all modi.
+        /// </summary>
         public Item?[] Items;
         public SylladexManager(List<SylladexCard> cards)
         {
-            Cards = cards;
+            Cards = cards; 
             Items = new Item?[NumberOfCards];
             for (int i = 0; i < NumberOfCards; i++)
             {
                 Items[i] = null;
             }
-            Modus = new ArraySylladex(ref Items);
+            FetchModus = new QueueSylladex(ref Items);
+            InsertModus = new QueueSylladex(ref Items);
+            DimensionModus = new QueueSylladex(ref Items);
             foreach (var card in Cards)
             {
-                card.Tint = Modus.Tint;
+                card.Tint = DimensionModus.Tint;
             }
         }
 
         public void InsertItem(Item item)
         {
-            Modus.InsertItem(item);
+            InsertModus.InsertItem(item);
         }
 
         public void FetchItem(Item item)
         {
-            Modus.FetchItem(item);
+            FetchModus.FetchItem(item);
         }
 
         public void Update()

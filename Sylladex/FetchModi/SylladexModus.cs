@@ -3,33 +3,39 @@ using Sylladex.Entities;
 using Sylladex.Managers;
 using System.Diagnostics;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace Sylladex.FetchModi
 {
-    public abstract class FetchModus
+    public abstract class SylladexModus
     {
         protected Item?[] _items;
         public Color Tint { get; set; } = Color.White;
-        public FetchModus(ref Item?[] items)
+        public bool IsFull
+        {
+            get => !_items.Any(item => item is null);
+        }
+        public SylladexModus(ref Item?[] items)
         {
             _items = items;
         }
-        
+
         /// <summary>
-        /// Move item from inventory to the game world
+        /// Move item from inventory at a given index to the game world
         /// </summary>
-        private void EjectFromInventory(Item item, int index = 0)
+        protected void EjectFromInventory(Item item, int? index = 0)
         {
             Item itemToBeEjected = new Item(item.Name, item.Texture, GameManager.EntityManager.GetObject("player").Position);
             GameManager.EntityManager.AddObject(itemToBeEjected.Name, itemToBeEjected);
-            _items[index] = null;
+            if (index is not null)
+            {
+                _items[(int)index] = null;
+            }
             Debug.WriteLine($"Ejected item: {itemToBeEjected.Name}");
         }
         /// <summary>
-        /// Move item from the game world to an inventory slot
+        /// Move item from the game world to an inventory slot at a given index
         /// </summary>
-        private void MoveToInventory(Item item, int index = 0)
+        protected void MoveToInventory(Item item, int index = 0)
         {
             _items[index] = item;
             GameManager.EntityManager.RemoveObject(item.Name);
@@ -75,58 +81,4 @@ namespace Sylladex.FetchModi
             }
         }
     }
-
-    public class ArraySylladex : FetchModus
-    {
-        public ArraySylladex(ref Item?[] items) : base(ref items)
-        {
-            Tint = Color.SkyBlue;
-        }
-    }
-
-    //public class QueueSylladex : FetchModus
-    //{
-    //    private Queue<IItem> _items;
-
-    //    public QueueSylladex(ref List<IItem> items) : base(ref items)
-    //    {
-    //        _items = new Queue<IItem>(items);
-    //        Tint = Color.Orange;
-    //    }
-
-    //    public override void InsertItem(IItem item)
-    //    {
-    //        _items.Enqueue(item);
-    //    }
-
-    //    public override IItem FetchItem()
-    //    {
-    //        return _items.Count > 0 ? _items.Dequeue() : null;
-    //    }
-    //}
-
-    //public class StackSylladex : FetchModus
-    //{
-    //    private Stack<IItem> _items;
-
-    //    public StackSylladex(ref List<IItem> items) : base(ref items)
-    //    {
-    //        _items = new Stack<IItem>(items);
-    //        Tint = Color.HotPink;
-    //    }
-
-    //    public override void InsertItem(IItem item)
-    //    {
-    //        _items.Push(item);
-    //    }
-
-    //    public override IItem FetchItem()
-    //    {
-    //        return _items.Count > 0 ? _items.Pop() : null;
-    //    }
-    //}
 }
-
-// Modus name:
-//- Captcha function (default: first available emptiest space, otherwise first card, or append to end)
-//- Fetch function (default: all cards)
