@@ -10,7 +10,7 @@ namespace Sylladex.Entities
     {
         public string Name { get; }
         public Texture2D Texture { get; }
-        private const float _pickupRadius = 50;
+        private const float _pickupRadius = 80;
         private readonly Texture2D _tooltipTexture = GameManager.TextureManager.GetObject("eButton");
         private readonly Vector2 _tooltipPosition;
         private readonly Vector2 _namePosition;
@@ -24,12 +24,13 @@ namespace Sylladex.Entities
             DrawPosition = position;
             _tooltipPosition = new Vector2((int)DrawPosition.X + 25, (int)DrawPosition.Y - 25);
             _namePosition = new Vector2((int)(DrawPosition.X + Texture.Width / 2), BottomPosition + 5);
-            GameManager.InputManager.AddAction(Keys.E, () =>
-            {
-                GameManager.SylladexManager.InsertItem(this);
-                GameManager.EntityManager.RemoveObject(Name);
-            }, () => CollisionManager.IsInRadius(this, GameManager.EntityManager.GetObject("player"), _pickupRadius), this);
-        } 
+            GameManager.InputManager.AddAction(Keys.E,
+                () => GameManager.SylladexManager.InsertItem(this),
+                () => CollisionManager.IsInRadius(this, GameManager.EntityManager.GetObject("player"), _pickupRadius),
+                context: this,
+                singlePress: true
+            );
+        }
         public override void Update()
         {
             if (CollisionManager.IsInRadius(this, GameManager.EntityManager.GetObject("player"), _pickupRadius))

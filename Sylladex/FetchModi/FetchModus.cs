@@ -1,52 +1,86 @@
 ﻿using Microsoft.Xna.Framework;
 using Sylladex.Entities;
 using Sylladex.Managers;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Sylladex.FetchModi
 {
     public abstract class FetchModus
     {
-        protected List<Item> _items;
+        protected Item?[] _items;
         public Color Tint { get; set; } = Color.White;
-        public FetchModus(ref List<Item> items)
+        public FetchModus(ref Item?[] items)
         {
             _items = items;
         }
+        
+        /// <summary>
+        /// Move item from inventory to the game world
+        /// </summary>
+        private void EjectFromInventory(Item item, int index = 0)
+        {
+            Item itemToBeEjected = new Item(item.Name, item.Texture, GameManager.EntityManager.GetObject("player").Position);
+            GameManager.EntityManager.AddObject(itemToBeEjected.Name, itemToBeEjected);
+            _items[index] = null;
+            Debug.WriteLine($"Ejected item: {itemToBeEjected.Name}");
+        }
+        /// <summary>
+        /// Move item from the game world to an inventory slot
+        /// </summary>
+        private void MoveToInventory(Item item, int index = 0)
+        {
+            _items[index] = item;
+            GameManager.EntityManager.RemoveObject(item.Name);
+            Debug.WriteLine($"Added item: {item.Name} to index {index}");
+        }
         public virtual void InsertItem(Item item)
         {
-            bool inserted = false;
-            foreach (var card in GameManager.SylladexManager.Cards)
+            // Try inserting the item into the first available empty card
+            for (int i = 0; i < _items.Length; i++)
             {
-                if (card.Item is null)
+                if (_items[i] is null)
                 {
-                    card.Item = item;
-                    _items.Add(item);
-                    inserted = true;
-                    Debug.WriteLine($"Added item: {item.Name}");
-                    break;
-                    // FIXME: still goes through the entire card list for some reason
+                    MoveToInventory(item, i);
+                    return;
                 }
             }
-            if (!inserted)
-            {
-                Debug.WriteLine("No empty card available");
-            }
+            // If no empty card is available, replace the first card
+            Debug.WriteLine($"Inventory full, replacing {_items[0]!.Name} with {item.Name}");
+            EjectFromInventory(_items[0]!);
+            MoveToInventory(item);
         }
-        public virtual Item FetchItem(Item item)
+        public virtual void FetchItem(Item item)
         {
-            Item itemToFetch = _items.Find((match) => match.Name == item.Name) ?? _items[0];
-            Debug.WriteLine($"Fetched item: {itemToFetch.Name}");
-            return itemToFetch;
+            Item? itemToFetch = null;
+            int fetchIndex = -1;
+            for (int i = 0; i < _items.Length; i++)
+            {
+                if (_items[i] is not null && _items[i]!.Name == item.Name)
+                {
+                    itemToFetch = _items[i];
+                    fetchIndex = i;
+                }
+            }
+            if (itemToFetch is not null)
+            {
+                _items[fetchIndex] = null;
+                EjectFromInventory(itemToFetch, fetchIndex);
+                return;
+            }
+            else
+            {
+                Debug.WriteLine($"Failed to fetch item: {item.Name}");
+            }
         }
     }
 
     public class ArraySylladex : FetchModus
     {
-        public ArraySylladex(ref List<Item> items) : base(ref items)
+        public ArraySylladex(ref Item?[] items) : base(ref items)
         {
-            Tint = Color.Blue;
+            Tint = Color.SkyBlue;
         }
     }
 

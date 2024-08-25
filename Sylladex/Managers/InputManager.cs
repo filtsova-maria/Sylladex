@@ -9,17 +9,17 @@ namespace Sylladex.Managers
     /// <summary>
     /// Manages user keyboard and mouse input.
     /// </summary>
-    public class InputManager : ObjectManager<Keys, List<(Action action, Func<bool>? condition, object? context)>>
+    public class InputManager : ObjectManager<Keys, List<(Action action, Func<bool>? condition, object? context, bool singlePress)>>
     {
         /// <summary>
         /// Current state of the mouse.
         /// </summary>
-        public static MouseState MouseState { get; private set; }
+        private static MouseState MouseState;
 
         /// <summary>
         /// Previous state of the mouse.
         /// </summary>
-        public static MouseState LastMouseState { get; private set; }
+        private static MouseState LastMouseState;
 
         /// <summary>
         /// Indicates whether the mouse button has been clicked.
@@ -30,19 +30,22 @@ namespace Sylladex.Managers
         /// Rectangle representing the mouse cursor for collision (hovering) detection.
         /// </summary>
         public static Rectangle MouseCursor { get; private set; }
+        
+        private static KeyboardState KeyboardState;
+        private static KeyboardState LastKeyboardState;
 
         /// <summary>
         /// Add an action binding for a key.
         /// </summary>
-        public void AddAction(Keys key, Action action, Func<bool>? condition = null, object? context = null)
+        public void AddAction(Keys key, Action action, Func<bool>? condition = null, object? context = null, bool singlePress=false)
         {
             if (_objects.ContainsKey(key))
             {
-                _objects[key].Add((action, condition, context));
+                _objects[key].Add((action, condition, context, singlePress));
             }
             else
             {
-                _objects[key] = new List<(Action action, Func<bool>? condition, object? context)> { (action, condition, context) };
+                _objects[key] = new List<(Action action, Func<bool>? condition, object? context, bool singlePress)> { (action, condition, context, singlePress) };
             }
         }
         /// <summary>
@@ -65,24 +68,40 @@ namespace Sylladex.Managers
         /// </summary>
         public void Update()
         {
-            KeyboardState kstate = Keyboard.GetState();
+            LastKeyboardState = KeyboardState;
+            KeyboardState = Keyboard.GetState();
             foreach (var key in _objects.Keys)
             {
-                if (kstate.IsKeyDown(key))
+                if (KeyboardState.IsKeyDown(key))
                 {
                     var actions = _objects[key].ToList(); // Create a copy to avoid concurrent modification
-                    foreach (var (action, condition, _) in actions)
+                    foreach (var (action, condition, _, singlePress) in actions)
                     {
                         if (condition is null || condition())
                         {
-                            action();
+                            if (singlePress)
+                            {
+                                // Check for single key press, counts on press, not release
+                                if (KeyboardState.IsKeyDown(key) && LastKeyboardState.IsKeyUp(key))
+                                {
+                                    action();
+                                }
+                            }
+                            else
+                            {
+                                // Check for key hold
+                                if (KeyboardState.IsKeyDown(key))
+                                {
+                                    action();
+                                }
+                            }
                         }
                     }
                 }
             }
-
             LastMouseState = MouseState;
             MouseState = Mouse.GetState();
+            // Click counts on press, not release
             Clicked = (MouseState.LeftButton == ButtonState.Pressed) && (LastMouseState.LeftButton == ButtonState.Released);
             MouseCursor = new Rectangle(MouseState.Position, new Point(1, 1));
         }

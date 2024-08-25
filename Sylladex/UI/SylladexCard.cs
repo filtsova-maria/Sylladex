@@ -10,7 +10,6 @@ namespace Sylladex.UI
         public Item? Item { get; set; } = null;
         private readonly SpriteFont _font;
         private readonly Texture2D _texture;
-        private Color _cardColor;
         private readonly float _itemTextureScale = 0.5f;
         public bool IsEnabled { get; set; } = true;
 
@@ -19,7 +18,7 @@ namespace Sylladex.UI
             Item = item;
             _font = GameManager.FontManager.GetObject("main");
             _texture = GameManager.TextureManager.GetObject("itemCard");
-            _cardColor = cardColor;
+            Tint = cardColor;
             Width = _texture.Width;
             Height = _texture.Height;
         }
@@ -57,16 +56,13 @@ namespace Sylladex.UI
         {
             if (IsEnabled && IsPressed() && Item is not null)
             {
-                Item fetchedItem = GameManager.SylladexManager.FetchItem(Item);
-                Item item = new Item(fetchedItem.Name, fetchedItem.Texture, GameManager.EntityManager.GetObject("player").Position);
-                GameManager.EntityManager.AddObject(Item.Name, item);
-                Item = null;
+                GameManager.SylladexManager.FetchItem(Item);
             }
         }
 
         public override void Draw()
         {
-            Color cardColor = IsEnabled ? (IsPressed() || IsHovered() ? Color.DarkGray : _cardColor) : Color.DarkGray;
+            Color cardColor = IsEnabled ? (IsPressed() || IsHovered() ? Color.DarkGray : (Color)Tint!) : Color.DarkGray;
             GameManager.SpriteBatch.Draw(
                 _texture,
                 new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height),
@@ -89,7 +85,7 @@ namespace Sylladex.UI
                     Vector2.Zero,
                     0.5f,
                     SpriteEffects.None,
-                    (LayerIndex + 1).Depth
+                    LayerIndex.Depth + 0.01f
                 );
                 GameManager.SpriteBatch.DrawString(
                     _font,
@@ -100,7 +96,7 @@ namespace Sylladex.UI
                     Vector2.Zero,
                     1f,
                     SpriteEffects.None,
-                    (LayerIndex + 2).Depth
+                    LayerIndex.Depth + 0.02f
                  );
             }
         }

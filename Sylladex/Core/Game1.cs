@@ -105,10 +105,10 @@ namespace Sylladex.Core
             GameManager.EntityManager.AddObject("Helmet", new Item("Helmet", GameManager.TextureManager.GetObject("Helmet"), new Vector2(700, 250)));
             // Load the input controls
             Player player = (Player)GameManager.EntityManager.GetObject("player");
-            GameManager.InputManager.AddAction(Keys.Up, () => player.Move(HorizontalDirection.None, VerticalDirection.Up));
-            GameManager.InputManager.AddAction(Keys.Down, () => player.Move(HorizontalDirection.None, VerticalDirection.Down));
-            GameManager.InputManager.AddAction(Keys.Left, () => player.Move(HorizontalDirection.Left, VerticalDirection.None));
-            GameManager.InputManager.AddAction(Keys.Right, () => player.Move(HorizontalDirection.Right, VerticalDirection.None));
+            GameManager.InputManager.AddAction(Keys.W, () => player.Move(HorizontalDirection.None, VerticalDirection.Up));
+            GameManager.InputManager.AddAction(Keys.S, () => player.Move(HorizontalDirection.None, VerticalDirection.Down));
+            GameManager.InputManager.AddAction(Keys.A, () => player.Move(HorizontalDirection.Left, VerticalDirection.None));
+            GameManager.InputManager.AddAction(Keys.D, () => player.Move(HorizontalDirection.Right, VerticalDirection.None));
             // Play the game soundtrack
             GameManager.SoundtrackManager.Play("game", true);
         }
@@ -122,6 +122,7 @@ namespace Sylladex.Core
             GameManager.EntityManager.Update();
             GameManager.CanvasManager.Update();
             GameManager.InputManager.Update();
+            GameManager.SylladexManager.Update();
 
             base.Update(gameTime);
         }
