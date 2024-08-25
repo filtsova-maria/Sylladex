@@ -126,7 +126,7 @@ namespace Sylladex.UI
             _children.Add(child, Position);
             child.Position = Position;
             // Set relative layer of the child element.
-            child.LayerIndex = LayerIndex + _children.Count;
+            child.LayerIndex = LayerIndex + _children.Count * 0.001f;
             // Set the absolute position of the child element.
             return child;
         }

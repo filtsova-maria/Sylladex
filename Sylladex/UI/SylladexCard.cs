@@ -85,7 +85,7 @@ namespace Sylladex.UI
                     Vector2.Zero,
                     0.5f,
                     SpriteEffects.None,
-                    LayerIndex.Depth + 0.01f
+                    LayerIndex.Depth + 0.001f
                 );
                 GameManager.SpriteBatch.DrawString(
                     _font,
@@ -96,7 +96,7 @@ namespace Sylladex.UI
                     Vector2.Zero,
                     1f,
                     SpriteEffects.None,
-                    LayerIndex.Depth + 0.02f
+                    LayerIndex.Depth + 0.002f
                  );
             }
         }
