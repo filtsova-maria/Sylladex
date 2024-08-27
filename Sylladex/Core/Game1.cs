@@ -71,9 +71,6 @@ namespace Sylladex.Core
             GameManager.CanvasManager.AddObject("background", Background);
             Canvas HUD = new Canvas(GameManager.TextureManager.GetObject("pixelBase"), 51, GameManager.Graphics!.PreferredBackBufferWidth, 100, Vector2.Zero, alignment: Alignment.BottomLeft, visible: true, color: Color.Black, opacity: 0.5f);
             GameManager.CanvasManager.AddObject("inventoryHUD", HUD);
-            new Label(GameManager.FontManager.GetObject("main"), "Sylladex:", Color.White, backgroundOpacity: 0.5f)
-                .In(HUD)
-                .At(Vector2.Zero);
             new Button(GameManager.TextureManager.GetObject("settingsIcon"), 50, 50, () => GameManager.CanvasManager.ShowCanvas("settingsMenu"))
                 .In(Background)
                 .At(Vector2.Zero, Alignment.TopRight);
@@ -93,9 +90,11 @@ namespace Sylladex.Core
                     .At(position, Alignment.Center));
             }
             GameManager.SylladexManager = new SylladexManager(cards);
-            // TODO: design item flow 
-            // TODO: implement item take by player (array sylladex)
+            new Label(GameManager.FontManager.GetObject("main"), $"Sylladex:{GameManager.SylladexManager.FetchModus.Name}::{GameManager.SylladexManager.InsertModus.Name}::{GameManager.SylladexManager.DimensionModus.Name}", textColor: Color.White, backgroundOpacity: 0f)
+                .In(HUD)
+                .At(Vector2.Zero);
             // TODO: add buttons to select sylladex mode and customize it
+            // TODO: create some label reference to be updated by the sylladex manager on change
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
             GameManager.EntityManager.AddObject("player", new Player(initPlayerPosition));

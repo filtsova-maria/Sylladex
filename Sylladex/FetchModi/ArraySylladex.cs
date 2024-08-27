@@ -5,6 +5,7 @@ namespace Sylladex.FetchModi
 {
     public class ArraySylladex : SylladexModus
     {
+        public override string Name => "Array";
         public override bool[] SlotEnabledMask { get; }
         public ArraySylladex(ref Item?[] items) : base(ref items)
         {

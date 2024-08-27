@@ -7,6 +7,7 @@ namespace Sylladex.FetchModi
     public class QueueSylladex : SylladexModus
     {
         public override bool[] SlotEnabledMask { get; }
+        public override string Name => "Queue";
         public QueueSylladex(ref Item?[] items) : base(ref items)
         {
             Tint = Color.Orange;

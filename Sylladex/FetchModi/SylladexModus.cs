@@ -14,6 +14,10 @@ namespace Sylladex.FetchModi
         /// Represents accessibility of the inventory slots for fetching.
         /// </summary>
         public abstract bool[] SlotEnabledMask { get; }
+        /// <summary>
+        /// Display name of the sylladex modus.
+        /// </summary>
+        public abstract string Name { get; }
         public bool IsFull
         {
             get => !_items.Any(item => item is null);

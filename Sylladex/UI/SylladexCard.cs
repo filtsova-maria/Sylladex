@@ -62,7 +62,7 @@ namespace Sylladex.UI
 
         public override void Draw()
         {
-            Color cardColor = IsEnabled ? (IsPressed() || IsHovered() ? Color.DarkGray : (Color)Tint!) : Color.DarkGray;
+            Color cardColor = IsEnabled ? (IsPressed() || IsHovered() ? Color.LightGray : (Color)Tint!) : Color.DarkGray;
             GameManager.SpriteBatch.Draw(
                 _texture,
                 new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height),
