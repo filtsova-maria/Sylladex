@@ -35,9 +35,10 @@ namespace Sylladex.Managers
             FetchModus = new QueueSylladex(ref Items);
             InsertModus = new QueueSylladex(ref Items);
             DimensionModus = new QueueSylladex(ref Items);
-            foreach (var card in Cards)
+            for (int i = 0; i < Cards.Count; i++)
             {
-                card.Tint = DimensionModus.Tint;
+                Cards[i].Tint = DimensionModus.Tint;
+                Cards[i].IsEnabled = FetchModus.SlotEnabledMask[i];
             }
         }
 
@@ -64,3 +65,9 @@ namespace Sylladex.Managers
         }
     }
 }
+
+// TODO: disabled mask Disabled bool[NumberOfCards] defined in each modus, all enabled by default
+// disable cards in constructor based on the modus Disabled mask
+// update it on change of modus in some changeXModus method
+// TODO: each sylladex should have Name property, write it as $"Sylladex:{SylladexManager.InsertModus.Name}::{SylladexManager.FetchModus.Name}::{SylladexManager.DisplayModus.Name}"
+// fyi stack InsertItem will be very similar to queue except first card being replaced on full

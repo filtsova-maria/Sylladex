@@ -10,6 +10,10 @@ namespace Sylladex.FetchModi
     {
         protected Item?[] _items;
         public Color Tint { get; set; } = Color.White;
+        /// <summary>
+        /// Represents accessibility of the inventory slots for fetching.
+        /// </summary>
+        public abstract bool[] SlotEnabledMask { get; }
         public bool IsFull
         {
             get => !_items.Any(item => item is null);
