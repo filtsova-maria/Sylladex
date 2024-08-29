@@ -1,9 +1,7 @@
-using Microsoft.Xna.Framework;
 using Sylladex.Entities;
 using Sylladex.FetchModi;
 using Sylladex.UI;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Sylladex.Managers
 {
@@ -32,9 +30,9 @@ namespace Sylladex.Managers
             {
                 Items[i] = null;
             }
-            FetchModus = new QueueSylladex(ref Items);
-            InsertModus = new QueueSylladex(ref Items);
-            DimensionModus = new QueueSylladex(ref Items);
+            FetchModus = new HashSylladex(ref Items);
+            InsertModus = new HashSylladex(ref Items);
+            DimensionModus = new HashSylladex(ref Items);
             for (int i = 0; i < Cards.Count; i++)
             {
                 Cards[i].Tint = DimensionModus.Tint;
