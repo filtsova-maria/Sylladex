@@ -60,7 +60,6 @@ namespace Sylladex.Managers
                 {
                     Cards[i].Item = Items[i];
                 }
-                Cards[i].Update();
             }
         }
     }

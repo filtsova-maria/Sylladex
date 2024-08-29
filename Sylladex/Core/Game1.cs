@@ -83,11 +83,11 @@ namespace Sylladex.Core
             int CardPadding = 10;
             DisplayLayout layout = new DisplayLayout(new Vector2(-(SylladexManager.NumberOfCards * (CardWidth + CardPadding)) / 2, 0), SylladexManager.NumberOfCards, CardWidth, CardPadding);
             List<SylladexCard> cards = new List<SylladexCard>();
-            foreach (var position in layout.Positions)
+            for (int i = 0; i < layout.Positions.Count; i++)
             {
-                cards.Add(new SylladexCard(null, Color.White)
+                cards.Add(new SylladexCard(null, Color.White, i)
                     .In(HUD)
-                    .At(position, Alignment.Center));
+                    .At(layout.Positions[i], Alignment.Center));
             }
             GameManager.SylladexManager = new SylladexManager(cards);
             new Label(GameManager.FontManager.GetObject("main"), $"Sylladex:{GameManager.SylladexManager.FetchModus.Name}::{GameManager.SylladexManager.InsertModus.Name}::{GameManager.SylladexManager.DimensionModus.Name}", textColor: Color.White, backgroundOpacity: 0f)

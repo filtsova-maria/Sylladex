@@ -69,5 +69,17 @@ namespace Sylladex.FetchModi
                 EjectFromInventory(propagatedItem, null);
             }
         }
+        public override void FetchItem(Item item)
+        {
+            Item? itemToFetch = _items[^1];
+            if (itemToFetch is null)
+            {
+                Debug.WriteLine($"Failed to fetch item: {item.Name}");
+                return;
+            }
+            _items[^1] = null;
+            EjectFromInventory(itemToFetch, _items.Length - 1);
+            return;
+        }
     }
 }

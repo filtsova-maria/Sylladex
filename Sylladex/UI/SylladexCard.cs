@@ -8,12 +8,16 @@ namespace Sylladex.UI
     public class SylladexCard : UIElement
     {
         public Item? Item { get; set; } = null;
+        /// <summary>
+        /// Inventory index the card represents, used for debugging purposes.
+        /// </summary>
+        private readonly int _index;
         private readonly SpriteFont _font;
         private readonly Texture2D _texture;
         private readonly float _itemTextureScale = 0.5f;
         public bool IsEnabled { get; set; } = true;
 
-        public SylladexCard(Item? item, Color cardColor)
+        public SylladexCard(Item? item, Color cardColor, int index)
         {
             Item = item;
             _font = GameManager.FontManager.GetObject("main");
@@ -21,6 +25,7 @@ namespace Sylladex.UI
             Tint = cardColor;
             Width = _texture.Width;
             Height = _texture.Height;
+            _index = index;
         }
 
         private Vector2 ItemPosition
