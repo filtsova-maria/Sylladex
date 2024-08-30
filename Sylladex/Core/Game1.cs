@@ -79,7 +79,7 @@ namespace Sylladex.Core
             new Button(GameManager.TextureManager.GetObject("cross"), 50, 50, () => GameManager.CanvasManager.HideCanvas("settingsMenu"), hoverColor: Color.Red)
                 .In(SettingsMenu)
                 .At(Vector2.Zero, Alignment.TopRight);
-            // Init the SylladexManager and related UI elements
+            // Init the SylladexManager
             int CardWidth = GameManager.TextureManager.GetObject("itemCard").Width;
             int CardPadding = 10;
             DisplayLayout layout = new DisplayLayout(new Vector2(-(SylladexManager.NumberOfCards * (CardWidth + CardPadding)) / 2, 0), SylladexManager.NumberOfCards, CardWidth, CardPadding);
@@ -94,6 +94,7 @@ namespace Sylladex.Core
                 .In(HUD)
                 .At(Vector2.Zero);
             GameManager.SylladexManager = new SylladexManager(cards, sylladexLabel);
+            // Set up the settings menu for sylladex configuration
             int buttonHeight = 25;
             int buttonWidth = 100;
             int buttonGroupPaddingX = 50;

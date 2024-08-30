@@ -70,7 +70,7 @@ namespace Sylladex.UI
             {
                 Vector2 textSize = _font.MeasureString(_text);
                 Vector2 textPosition = new Vector2((int)(Bounds.Center.X - textSize.X / 2), (int)(Bounds.Center.Y - textSize.Y / 2));
-                GameManager.SpriteBatch.DrawString(_font, _text, textPosition, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, (LayerIndex + 1).Depth);
+                GameManager.SpriteBatch.DrawString(_font, _text, textPosition, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, LayerIndex.Depth + 0.01f);
             }
         }
     }

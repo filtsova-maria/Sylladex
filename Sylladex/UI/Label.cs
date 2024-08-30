@@ -58,7 +58,7 @@ namespace Sylladex.UI
                     LayerIndex.Depth
                 );
             }
-            GameManager.SpriteBatch.DrawString(_font, _text, Position, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, LayerIndex.Depth + 0.1f);
+            GameManager.SpriteBatch.DrawString(_font, _text, Position, _textColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, LayerIndex.Depth + 0.01f);
         }
     }
 }
