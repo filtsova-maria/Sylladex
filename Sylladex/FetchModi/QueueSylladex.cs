@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace Sylladex.FetchModi
 {
+    /// <summary>
+    /// Represents the Queue modus. Items are enqueued into the available slots, pushing the rest to the right, and only the last card can be accessed (=first item inserted, FIFO).
+    /// </summary>
     public class QueueSylladex : SylladexModus
     {
         public static string GetName() => "Queue";
@@ -73,6 +76,7 @@ namespace Sylladex.FetchModi
         }
         public override void FetchItem(Item item)
         {
+            // Queue modus always fetches the last inventory slot
             Item? itemToFetch = _items[^1];
             if (itemToFetch is null)
             {
@@ -81,7 +85,6 @@ namespace Sylladex.FetchModi
             }
             _items[^1] = null;
             EjectFromInventory(itemToFetch, _items.Length - 1);
-            return;
         }
     }
 }

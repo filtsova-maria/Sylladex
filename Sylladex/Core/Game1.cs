@@ -42,7 +42,7 @@ namespace Sylladex.Core
         {
             // Load the textures
             GameManager.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            string[] textures = { "player", "playerMove", "floor", "controlDeck", "itemCard", "Sword", "Shield", "Helmet", "Potion", "settingsIcon", "pixelBase", "cross", "eButton" };
+            string[] textures = { "player", "playerMove", "floor", "itemCard", "Sword", "Shield", "Helmet", "Potion", "settingsIcon", "pixelBase", "cross", "eButton" };
             foreach (var texture in textures)
             {
                 GameManager.TextureManager.AddObject(texture, Content.Load<Texture2D>(texture));
@@ -90,7 +90,7 @@ namespace Sylladex.Core
                     .In(HUD)
                     .At(layout.Positions[i], Alignment.Center));
             }
-            Label sylladexLabel = new Label(GameManager.FontManager.GetObject("main"), "", textColor: Color.White, backgroundOpacity: 0f)
+            Label sylladexLabel = new Label("", textColor: Color.White, backgroundOpacity: 0f)
                 .In(HUD)
                 .At(Vector2.Zero);
             GameManager.SylladexManager = new SylladexManager(cards, sylladexLabel);
@@ -102,15 +102,15 @@ namespace Sylladex.Core
             DisplayLayout fetchButtonLayout = new DisplayLayout(new Vector2(buttonGroupPaddingX, buttonGroupPaddingY), 4, buttonWidth, 5);
             DisplayLayout insertButtonLayout = new DisplayLayout(new Vector2(buttonGroupPaddingX, buttonGroupPaddingY + buttonHeight * 2), 4, buttonWidth, 5);
             DisplayLayout displayButtonLayout = new DisplayLayout(new Vector2(buttonGroupPaddingX, buttonGroupPaddingY + buttonHeight * 4), 4, buttonWidth, 5);
-            new Label(GameManager.FontManager.GetObject("main"), "Fetch:").In(SettingsMenu).At(fetchButtonLayout.Positions[0] - new Vector2(0, buttonHeight));
-            new Label(GameManager.FontManager.GetObject("main"), "Insert:").In(SettingsMenu).At(insertButtonLayout.Positions[0] - new Vector2(0, buttonHeight));
-            new Label(GameManager.FontManager.GetObject("main"), "Display:").In(SettingsMenu).At(displayButtonLayout.Positions[0] - new Vector2(0, buttonHeight));
+            new Label("Fetch:").In(SettingsMenu).At(fetchButtonLayout.Positions[0] - new Vector2(0, buttonHeight));
+            new Label("Insert:").In(SettingsMenu).At(insertButtonLayout.Positions[0] - new Vector2(0, buttonHeight));
+            new Label("Display:").In(SettingsMenu).At(displayButtonLayout.Positions[0] - new Vector2(0, buttonHeight));
 
             foreach (SylladexModusType modusType in Enum.GetValues(typeof(SylladexModusType)))
             {
-                CreateModusButton(SettingsMenu, buttonWidth, buttonHeight, fetchButtonLayout.Positions[(int)modusType], SylladexModusParameter.Fetch, modusType, SylladexManager.GetModusColor(modusType), SylladexManager.GetModusName(modusType));
-                CreateModusButton(SettingsMenu, buttonWidth, buttonHeight, insertButtonLayout.Positions[(int)modusType], SylladexModusParameter.Insert, modusType, SylladexManager.GetModusColor(modusType), SylladexManager.GetModusName(modusType));
-                CreateModusButton(SettingsMenu, buttonWidth, buttonHeight, displayButtonLayout.Positions[(int)modusType], SylladexModusParameter.Dimension, modusType, SylladexManager.GetModusColor(modusType), SylladexManager.GetModusName(modusType));
+                CreateModusButton(SettingsMenu, buttonWidth, buttonHeight, fetchButtonLayout.Positions[(int)modusType], SylladexModusAction.Fetch, modusType, SylladexManager.GetModusColor(modusType), SylladexManager.GetModusName(modusType));
+                CreateModusButton(SettingsMenu, buttonWidth, buttonHeight, insertButtonLayout.Positions[(int)modusType], SylladexModusAction.Insert, modusType, SylladexManager.GetModusColor(modusType), SylladexManager.GetModusName(modusType));
+                CreateModusButton(SettingsMenu, buttonWidth, buttonHeight, displayButtonLayout.Positions[(int)modusType], SylladexModusAction.Dimension, modusType, SylladexManager.GetModusColor(modusType), SylladexManager.GetModusName(modusType));
             }
             // Load the entities
             Vector2 initPlayerPosition = new Vector2(GameManager.Graphics.PreferredBackBufferWidth / 2, GameManager.Graphics.PreferredBackBufferHeight / 2);
@@ -128,7 +128,7 @@ namespace Sylladex.Core
             // Play the game soundtrack
             GameManager.SoundtrackManager.Play("game", true);
         }
-        private void CreateModusButton(Canvas parent, int width, int height, Vector2 position, SylladexModusParameter modusParameter, SylladexModusType modusType, Color color, string text)
+        private void CreateModusButton(Canvas parent, int width, int height, Vector2 position, SylladexModusAction modusParameter, SylladexModusType modusType, Color color, string text)
         {
             new Button(GameManager.TextureManager.GetObject("pixelBase"), width, height, () => GameManager.SylladexManager.SetModus(modusParameter, modusType), color: color, text: text)
                 .In(parent)

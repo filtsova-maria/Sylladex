@@ -12,6 +12,9 @@ namespace Sylladex.Graphics
     public class Sprite
     {
         public readonly Texture2D Texture;
+        /// <summary>
+        /// Logical owner of the sprite, e.g. <see cref="Player"/>.
+        /// </summary>
         private readonly Entity _owner;
         public Color Tint = Color.White;
 

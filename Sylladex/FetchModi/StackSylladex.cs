@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace Sylladex.FetchModi
 {
+    /// <summary>
+    /// Represents the Stack modus. Items are stored on a stack and only first item slot can be accessed (top card, LIFO).
+    /// </summary>
     public class StackSylladex : SylladexModus
     {
         public static string GetName() => "Stack";
@@ -76,6 +79,7 @@ namespace Sylladex.FetchModi
 
         public override void FetchItem(Item item)
         {
+            // Stack modus fetches the item from the top of the stack and moves the rest of the items up
             Item? itemToFetch = _items[0];
             if (itemToFetch is null)
             {

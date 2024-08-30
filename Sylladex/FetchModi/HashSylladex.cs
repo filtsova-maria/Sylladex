@@ -4,6 +4,9 @@ using System.Diagnostics;
 
 namespace Sylladex.FetchModi
 {
+    /// <summary>
+    /// Represents the Hash modus. Items are stored in slots based on a hash function and can be retrieved in any order.
+    /// </summary>
     public class HashSylladex : SylladexModus
     {
         public static string GetName() => "Hash";
@@ -40,6 +43,7 @@ namespace Sylladex.FetchModi
             }
             else
             {
+                // If there is a collision, replace the existing item
                 EjectFromInventory(_items[index]!, index);
                 MoveToInventory(item, index);
             }

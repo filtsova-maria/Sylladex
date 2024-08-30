@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 
 namespace Sylladex.Managers
 {

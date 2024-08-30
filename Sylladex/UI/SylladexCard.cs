@@ -5,6 +5,9 @@ using Sylladex.Managers;
 
 namespace Sylladex.UI
 {
+    /// <summary>
+    /// Represents a clickable inventory slot
+    /// </summary>
     public class SylladexCard : UIElement
     {
         public Item? Item { get; set; } = null;
@@ -14,6 +17,9 @@ namespace Sylladex.UI
         private readonly int _index;
         private readonly SpriteFont _font;
         private readonly Texture2D _texture;
+        /// <summary>
+        /// Determines how much the item texture should be scaled down to be displayed in a card.
+        /// </summary>
         private readonly float _itemTextureScale = 0.5f;
         public bool IsEnabled { get; set; } = true;
 

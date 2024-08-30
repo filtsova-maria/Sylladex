@@ -10,6 +10,9 @@ namespace Sylladex.Entities
     {
         public string Name { get; }
         public Texture2D Texture { get; }
+        /// <summary>
+        /// Determines the radius around the player in which the item can be picked up.
+        /// </summary>
         private const float _pickupRadius = 80;
         private readonly Texture2D _tooltipTexture = GameManager.TextureManager.GetObject("eButton");
         private readonly Vector2 _tooltipPosition;
@@ -31,6 +34,7 @@ namespace Sylladex.Entities
                 singlePress: true
             );
         }
+
         public override void Update()
         {
             if (CollisionManager.IsInRadius(this, GameManager.EntityManager.GetObject("player"), _pickupRadius))
@@ -42,6 +46,7 @@ namespace Sylladex.Entities
                 Sprite.Tint = Color.White;
             }
         }
+
         public override void Draw()
         {
             base.Draw();

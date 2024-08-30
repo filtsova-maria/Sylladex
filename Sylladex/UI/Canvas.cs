@@ -22,8 +22,8 @@ namespace Sylladex.UI
         /// </summary>
         public Color? Tint { get; set; }
 
-        private int _width;
-        private int _height;
+        private readonly int _width;
+        private readonly int _height;
 
         public int Width => _width;
         public int Height => _height;
@@ -82,10 +82,10 @@ namespace Sylladex.UI
             Position = alignment switch
             {
                 Alignment.TopLeft => position,
-                Alignment.TopRight => new Vector2(position.X + GameManager.Graphics!.PreferredBackBufferWidth - width, position.Y),
-                Alignment.BottomLeft => new Vector2(position.X, position.Y + GameManager.Graphics!.PreferredBackBufferHeight - height),
-                Alignment.BottomRight => new Vector2(position.X + GameManager.Graphics!.PreferredBackBufferWidth - width, position.Y + GameManager.Graphics!.PreferredBackBufferHeight - height),
-                Alignment.Center => new Vector2(position.X + (GameManager.Graphics!.PreferredBackBufferWidth - width) / 2, position.Y + (GameManager.Graphics!.PreferredBackBufferHeight - height) / 2),
+                Alignment.TopRight => new Vector2(position.X + GameManager.Graphics.PreferredBackBufferWidth - width, position.Y),
+                Alignment.BottomLeft => new Vector2(position.X, position.Y + GameManager.Graphics.PreferredBackBufferHeight - height),
+                Alignment.BottomRight => new Vector2(position.X + GameManager.Graphics.PreferredBackBufferWidth - width, position.Y + GameManager.Graphics.PreferredBackBufferHeight - height),
+                Alignment.Center => new Vector2(position.X + (GameManager.Graphics.PreferredBackBufferWidth - width) / 2, position.Y + (GameManager.Graphics.PreferredBackBufferHeight - height) / 2),
                 _ => position
             };
             _visible = visible;
@@ -158,8 +158,14 @@ namespace Sylladex.UI
             child.OriginalBounds = new Rectangle(0, 0, child.Texture.Width, child.Texture.Height);
             return child;
         }
-
+        /// <summary>
+        /// Show canvas and its children
+        /// </summary>
         public void Show() => _visible = true;
+
+        /// <summary>
+        /// Hide canvas and its children
+        /// </summary>
         public void Hide() => _visible = false;
 
         /// <summary>

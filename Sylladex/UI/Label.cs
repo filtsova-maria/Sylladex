@@ -25,9 +25,9 @@ namespace Sylladex.UI
         /// <param name="backgroundColor">The background color of the label (optional).</param>
         /// <param name="textColor">The text color of the label (optional).</param>
         /// <param name="backgroundOpacity">The opacity of the background color (optional).</param>
-        public Label(SpriteFont font, string text, Color? backgroundColor = null, Color? textColor = null, float backgroundOpacity = 1f)
+        public Label(string text, SpriteFont? font = null, Color ? backgroundColor = null, Color? textColor = null, float backgroundOpacity = 1f)
         {
-            _font = font;
+            _font = font ?? GameManager.FontManager.GetObject("main");
             _text = text;
             _textColor = textColor ?? Color.Black;
             _backgroundColor = backgroundColor;

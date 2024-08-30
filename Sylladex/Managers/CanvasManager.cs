@@ -35,8 +35,13 @@ namespace Sylladex.Managers
                 }
             }
         }
-
+        /// <summary>
+        /// Hides the given canvas and its chilren.
+        /// </summary>
         public void ShowCanvas(string name) => GetObject(name).Show();
+        /// <summary>
+        /// Shows the given canvas and its chilren.
+        /// </summary>
         public void HideCanvas(string name) => GetObject(name).Hide();
 
     }

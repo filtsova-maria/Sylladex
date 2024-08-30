@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace Sylladex.Managers
 {
+    /// <summary>
+    /// Represents available modi.
+    /// </summary>
     public enum SylladexModusType
     {
         Hash,
@@ -13,7 +16,10 @@ namespace Sylladex.Managers
         Stack,
         Array
     }
-    public enum SylladexModusParameter
+    /// <summary>
+    /// Represents modus configurations as different modi can be used for fetching and inserting.
+    /// </summary>
+    public enum SylladexModusAction
     {
         Fetch,
         Insert,
@@ -25,7 +31,13 @@ namespace Sylladex.Managers
     public class SylladexManager
     {
         public const int NumberOfCards = 3; // Number of inventory slots, can potentially made dynamic in the future
+        /// <summary>
+        /// Modus used for fetching items from the inventory.
+        /// </summary>
         public SylladexModus FetchModus { get; set; }
+        /// <summary>
+        /// Modus used for inserting items into the inventory.
+        /// </summary>
         public SylladexModus InsertModus { get; set; }
         public SylladexModus DimensionModus { get; set; }
         /// <summary>
@@ -40,16 +52,20 @@ namespace Sylladex.Managers
         public SylladexManager(List<SylladexCard> cards, Label statusLabel)
         {
             Cards = cards;
+            // Initialize all slots as empty
             Items = new Item?[NumberOfCards];
             for (int i = 0; i < NumberOfCards; i++)
             {
                 Items[i] = null;
             }
+            // Set default modi
             FetchModus = new ArraySylladex(ref Items);
             InsertModus = new ArraySylladex(ref Items);
             DimensionModus = new ArraySylladex(ref Items);
+            // Set status label
             _statusLabel = statusLabel;
             _statusLabel.SetText($"Sylladex:{FetchModus.Name}::{InsertModus.Name}::{DimensionModus.Name}");
+            // Configure sylladex cards
             for (int i = 0; i < Cards.Count; i++)
             {
                 Cards[i].Tint = FetchModus.Tint;
@@ -66,8 +82,12 @@ namespace Sylladex.Managers
         {
             FetchModus.FetchItem(item);
         }
-
-        public void SetModus(SylladexModusParameter parameter, SylladexModusType type)
+        /// <summary>
+        /// Set modus for fetching, inserting or dimension.
+        /// </summary>
+        /// <param name="action">action</param>
+        /// <param name="type">modus</param>
+        public void SetModus(SylladexModusAction action, SylladexModusType type)
         {
             SylladexModus modus = type switch
             {
@@ -77,20 +97,21 @@ namespace Sylladex.Managers
                 SylladexModusType.Array => new ArraySylladex(ref Items),
                 _ => FetchModus
             };
-            switch (parameter)
+            switch (action)
             {
-                case SylladexModusParameter.Fetch:
+                case SylladexModusAction.Fetch:
                     FetchModus = modus;
+                    // Fetch modus determines card color and availability
                     for (int i = 0; i < Cards.Count; i++)
                     {
                         Cards[i].IsEnabled = FetchModus.SlotEnabledMask[i];
                         Cards[i].Tint = FetchModus.Tint;
                     }
                     break;
-                case SylladexModusParameter.Insert:
+                case SylladexModusAction.Insert:
                     InsertModus = modus;
                     break;
-                case SylladexModusParameter.Dimension:
+                case SylladexModusAction.Dimension:
                     DimensionModus = modus;
                     break;
                 default:
@@ -101,6 +122,7 @@ namespace Sylladex.Managers
 
         public void Update()
         {
+            // Keep UI in sync with logical representation
             for (int i = 0; i < NumberOfCards; i++)
             {
                 if (Cards[i].Item != Items[i])
@@ -109,6 +131,9 @@ namespace Sylladex.Managers
                 }
             }
         }
+        /// <summary>
+        /// Get color of a given modus
+        /// </summary>
         public static Color GetModusColor(SylladexModusType modusType)
         {
             return modusType switch
@@ -120,7 +145,9 @@ namespace Sylladex.Managers
                 _ => Color.White
             };
         }
-
+        /// <summary>
+        /// Get name of a given modus.
+        /// </summary>
         public static string GetModusName(SylladexModusType modusType)
         {
             return modusType switch
@@ -134,9 +161,3 @@ namespace Sylladex.Managers
         }
     }
 }
-
-// TODO: disabled mask Disabled bool[NumberOfCards] defined in each modus, all enabled by default
-// disable cards in constructor based on the modus Disabled mask
-// update it on change of modus in some changeXModus method
-// TODO: each sylladex should have Name property, write it as $"Sylladex:{SylladexManager.InsertModus.Name}::{SylladexManager.FetchModus.Name}::{SylladexManager.DisplayModus.Name}"
-// fyi stack InsertItem will be very similar to queue except first card being replaced on full

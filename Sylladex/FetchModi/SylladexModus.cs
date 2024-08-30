@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace Sylladex.FetchModi
 {
+    /// <summary>
+    /// Base class of a sylladex modus. Modus represents the way player can interact with their inventory, item fetch and insert.
+    /// </summary>
     public abstract class SylladexModus
     {
         protected Item?[] _items;
@@ -67,6 +70,7 @@ namespace Sylladex.FetchModi
         }
         public virtual void FetchItem(Item item)
         {
+            // Default Fetch mode is to go through the inventory and find the item to fetch
             Item? itemToFetch = null;
             int fetchIndex = -1;
             for (int i = 0; i < _items.Length; i++)
