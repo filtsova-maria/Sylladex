@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using Sylladex.Entities;
 using Sylladex.FetchModi;
 using Sylladex.UI;
@@ -5,6 +6,19 @@ using System.Collections.Generic;
 
 namespace Sylladex.Managers
 {
+    public enum SylladexModusType
+    {
+        Hash,
+        Queue,
+        Stack,
+        Array
+    }
+    public enum SylladexModusParameter
+    {
+        Fetch,
+        Insert,
+        Dimension
+    }
     /// <summary>
     /// Represents the inventory system of the player.
     /// </summary>
@@ -22,20 +36,23 @@ namespace Sylladex.Managers
         /// Logical representation of inventory slots. Acts as a single source of truth for all modi.
         /// </summary>
         public Item?[] Items;
-        public SylladexManager(List<SylladexCard> cards)
+        private readonly Label _statusLabel;
+        public SylladexManager(List<SylladexCard> cards, Label statusLabel)
         {
-            Cards = cards; 
+            Cards = cards;
             Items = new Item?[NumberOfCards];
             for (int i = 0; i < NumberOfCards; i++)
             {
                 Items[i] = null;
             }
-            FetchModus = new HashSylladex(ref Items);
-            InsertModus = new HashSylladex(ref Items);
-            DimensionModus = new HashSylladex(ref Items);
+            FetchModus = new ArraySylladex(ref Items);
+            InsertModus = new ArraySylladex(ref Items);
+            DimensionModus = new ArraySylladex(ref Items);
+            _statusLabel = statusLabel;
+            _statusLabel.SetText($"Sylladex:{FetchModus.Name}::{InsertModus.Name}::{DimensionModus.Name}");
             for (int i = 0; i < Cards.Count; i++)
             {
-                Cards[i].Tint = DimensionModus.Tint;
+                Cards[i].Tint = FetchModus.Tint;
                 Cards[i].IsEnabled = FetchModus.SlotEnabledMask[i];
             }
         }
@@ -50,6 +67,38 @@ namespace Sylladex.Managers
             FetchModus.FetchItem(item);
         }
 
+        public void SetModus(SylladexModusParameter parameter, SylladexModusType type)
+        {
+            SylladexModus modus = type switch
+            {
+                SylladexModusType.Hash => new HashSylladex(ref Items),
+                SylladexModusType.Queue => new QueueSylladex(ref Items),
+                SylladexModusType.Stack => new StackSylladex(ref Items),
+                SylladexModusType.Array => new ArraySylladex(ref Items),
+                _ => FetchModus
+            };
+            switch (parameter)
+            {
+                case SylladexModusParameter.Fetch:
+                    FetchModus = modus;
+                    for (int i = 0; i < Cards.Count; i++)
+                    {
+                        Cards[i].IsEnabled = FetchModus.SlotEnabledMask[i];
+                        Cards[i].Tint = FetchModus.Tint;
+                    }
+                    break;
+                case SylladexModusParameter.Insert:
+                    InsertModus = modus;
+                    break;
+                case SylladexModusParameter.Dimension:
+                    DimensionModus = modus;
+                    break;
+                default:
+                    break;
+            }
+            _statusLabel.SetText($"Sylladex:{FetchModus.Name}::{InsertModus.Name}::{DimensionModus.Name}");
+        }
+
         public void Update()
         {
             for (int i = 0; i < NumberOfCards; i++)
@@ -59,6 +108,29 @@ namespace Sylladex.Managers
                     Cards[i].Item = Items[i];
                 }
             }
+        }
+        public static Color GetModusColor(SylladexModusType modusType)
+        {
+            return modusType switch
+            {
+                SylladexModusType.Array => ArraySylladex.GetColor(),
+                SylladexModusType.Queue => QueueSylladex.GetColor(),
+                SylladexModusType.Stack => StackSylladex.GetColor(),
+                SylladexModusType.Hash => HashSylladex.GetColor(),
+                _ => Color.White
+            };
+        }
+
+        public static string GetModusName(SylladexModusType modusType)
+        {
+            return modusType switch
+            {
+                SylladexModusType.Array => ArraySylladex.GetName(),
+                SylladexModusType.Queue => QueueSylladex.GetName(),
+                SylladexModusType.Stack => StackSylladex.GetName(),
+                SylladexModusType.Hash => HashSylladex.GetName(),
+                _ => "Unknown"
+            };
         }
     }
 }

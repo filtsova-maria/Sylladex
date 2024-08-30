@@ -5,11 +5,13 @@ namespace Sylladex.FetchModi
 {
     public class ArraySylladex : SylladexModus
     {
-        public override string Name => "Array";
+        public static string GetName() => "Array";
+        public static Color GetColor() => Color.SkyBlue;
+        public override string Name => GetName();
         public override bool[] SlotEnabledMask { get; }
         public ArraySylladex(ref Item?[] items) : base(ref items)
         {
-            Tint = Color.SkyBlue;
+            Tint = GetColor();
             SlotEnabledMask = new bool[_items.Length];
             for (int i = 0; i < SlotEnabledMask.Length; i++)
             {

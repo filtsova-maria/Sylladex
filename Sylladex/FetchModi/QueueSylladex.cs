@@ -6,11 +6,13 @@ namespace Sylladex.FetchModi
 {
     public class QueueSylladex : SylladexModus
     {
+        public static string GetName() => "Queue";
+        public static Color GetColor() => Color.Orange;
         public override bool[] SlotEnabledMask { get; }
-        public override string Name => "Queue";
+        public override string Name => GetName();
         public QueueSylladex(ref Item?[] items) : base(ref items)
         {
-            Tint = Color.Orange;
+            Tint = GetColor();
             SlotEnabledMask = new bool[_items.Length];
             for (int i = 0; i < SlotEnabledMask.Length - 1; i++)
             {

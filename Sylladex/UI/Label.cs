@@ -36,6 +36,7 @@ namespace Sylladex.UI
             Height = (int)_font.MeasureString(_text).Y;
         }
 
+        public void SetText(string text) => _text = text;
         public override void Update()
         {}
 

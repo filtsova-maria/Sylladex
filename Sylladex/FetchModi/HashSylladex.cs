@@ -6,11 +6,13 @@ namespace Sylladex.FetchModi
 {
     public class HashSylladex : SylladexModus
     {
-        public override string Name => "Hash";
+        public static string GetName() => "Hash";
+        public static Color GetColor() => Color.Yellow;
+        public override string Name => GetName();
         public override bool[] SlotEnabledMask { get; }
         public HashSylladex(ref Item?[] items) : base(ref items)
         {
-            Tint = Color.Yellow;
+            Tint = GetColor();
             SlotEnabledMask = new bool[_items.Length];
             for (int i = 0; i < SlotEnabledMask.Length; i++)
             {
