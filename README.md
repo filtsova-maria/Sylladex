@@ -13,6 +13,9 @@ The Sylladex project is a prototype of an inventory system inspired by the Homes
 ## How to play
 - Use WASD to move and E to pick up items. Click on items to fetch them. Some item slots can be disabled based on your selected fetch modus, you can configure your inventory system in the settings menu (top right corner).
 
+![image](https://github.com/user-attachments/assets/bd75596b-eb38-487d-90d3-755ec1714f3f)
+![image](https://github.com/user-attachments/assets/abcf8517-4235-422e-9534-f3f4537b1f40)
+
 ### Modus logic:
 - **Array**: You can fetch any item by clicking on the slot. Inserting a new item puts it into the first available slot. When full, first item is replaced.
 - **Stack**: You can fetch the leftmost item by clicking on the slot. Inserting a new item appends it to the left and pushes the rest to the right. When full, the leftmost item is replaced.
@@ -21,3 +24,4 @@ The Sylladex project is a prototype of an inventory system inspired by the Homes
 
 ## Debugging
 - The project uses `Debug.WriteLine` to log various actions and states (especially fetch modi). You can see these logs in the Output tab in Visual Studio.
+
